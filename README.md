@@ -11,7 +11,7 @@ yarn add react-tournament-bracket
 ```
 
 # Usage
-```jsx harmony
+```jsx
 
 import {Bracket} from 'react-tournament-bracket';
 import {render} from 'react-dom';
