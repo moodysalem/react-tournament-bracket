@@ -25,3 +25,4 @@ render(<Bracket game={game}/>, document.getElementById('app'));
 * Component documentation
 * Better handling of mouse team highlighting (currently, when moving between teams in a particular game, the mouse events fire in inconsistent order and can result in the wrong team left highlighted)
 * Consider simplifying the game model passed to this component
+* Add tests
