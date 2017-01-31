@@ -249,8 +249,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	Bracket.propTypes = {
 	  game: _GameShape2.default.isRequired,
 
-	  hoveredTeam: _react.PropTypes.object,
-	  onHoveredTeamChange: _react.PropTypes.func.isRequired,
+	  hoveredTeamId: _react.PropTypes.string,
+	  onHoveredTeamIdChange: _react.PropTypes.func.isRequired,
 
 	  onClickGame: _react.PropTypes.func,
 
@@ -268,7 +268,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }).isRequired
 	};
 	Bracket.defaultProps = {
-	  hoveredTeam: null,
+	  hoveredTeamId: null,
 
 	  onClickGame: null,
 
@@ -286,7 +286,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    homeVisitorSpread: 12
 	  }
 	};
-	exports.default = (0, _reactControllables2.default)(Bracket, ['hoveredTeam']);
+	exports.default = (0, _reactControllables2.default)(Bracket, ['hoveredTeamId']);
 
 /***/ },
 /* 2 */
@@ -352,8 +352,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function render() {
 	      var _props = this.props,
 	          game = _props.game,
-	          hoveredTeam = _props.hoveredTeam,
-	          onHoveredTeamChange = _props.onHoveredTeamChange,
+	          hoveredTeamId = _props.hoveredTeamId,
+	          onHoveredTeamIdChange = _props.onHoveredTeamIdChange,
 	          _props$style = _props.style,
 	          backgroundColor = _props$style.backgroundColor,
 	          hoverBackgroundColor = _props$style.hoverBackgroundColor,
@@ -363,7 +363,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          teamScoreStyle = _props$style.teamScoreStyle,
 	          gameNameStyle = _props$style.gameNameStyle,
 	          teamSeparatorStyle = _props$style.teamSeparatorStyle,
-	          rest = _objectWithoutProperties(_props, ['game', 'hoveredTeam', 'onHoveredTeamChange', 'style']);
+	          rest = _objectWithoutProperties(_props, ['game', 'hoveredTeamId', 'onHoveredTeamIdChange', 'style']);
 
 	      var name = game.name,
 	          bySide = game.sides;
@@ -389,7 +389,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return _react2.default.createElement(
 	          'g',
 	          { onMouseEnter: function onMouseEnter() {
-	              return onHover(side && side.team ? side.team : null);
+	              return onHover(side && side.team ? side.team.id : null);
 	            }, onMouseLeave: function onMouseLeave() {
 	              return onHover(null);
 	            } },
@@ -417,8 +417,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        );
 	      };
 
-	      var homeHovered = home && home.team && home.team === hoveredTeam,
-	          visitorHovered = visitor && visitor.team && visitor.team === hoveredTeam;
+	      var homeHovered = home && home.team && home.team.id === hoveredTeamId,
+	          visitorHovered = visitor && visitor.team && visitor.team.id === hoveredTeamId;
 
 	      return _react2.default.createElement(
 	        'svg',
@@ -430,8 +430,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	          rx: '3', ry: '3' }),
 	        _react2.default.createElement('rect', { x: '170', y: '0', width: '30', height: '45', fill: scoreBackground, rx: '3', ry: '3' }),
 	        winnerBackground,
-	        home ? _react2.default.createElement(Side, { x: 0, y: 0, side: home, onHover: onHoveredTeamChange }) : null,
-	        visitor ? _react2.default.createElement(Side, { x: 0, y: 22.5, side: visitor, onHover: onHoveredTeamChange }) : null,
+	        home ? _react2.default.createElement(Side, { x: 0, y: 0, side: home, onHover: onHoveredTeamIdChange }) : null,
+	        visitor ? _react2.default.createElement(Side, { x: 0, y: 22.5, side: visitor, onHover: onHoveredTeamIdChange }) : null,
 	        _react2.default.createElement('line', { x1: '0', y1: '22.5', x2: '200', y2: '22.5', style: teamSeparatorStyle }),
 	        _react2.default.createElement(
 	          'text',
@@ -448,8 +448,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	BracketGame.propTypes = {
 	  game: _GameShape2.default.isRequired,
 
-	  hoveredTeam: _react.PropTypes.object,
-	  onHoveredTeamChange: _react.PropTypes.func.isRequired,
+	  hoveredTeamId: _react.PropTypes.string,
+	  onHoveredTeamIdChange: _react.PropTypes.func.isRequired,
 
 	  style: _react.PropTypes.shape({
 	    backgroundColor: _react.PropTypes.string.isRequired,
@@ -463,7 +463,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  })
 	};
 	BracketGame.defaultProps = {
-	  hoveredTeam: null,
+	  hoveredTeamId: null,
 
 	  style: {
 	    backgroundColor: '#58595e',
@@ -477,7 +477,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    teamSeparatorStyle: { stroke: '#444549', strokeWidth: 1 }
 	  }
 	};
-	exports.default = (0, _reactControllables2.default)(BracketGame, ['hoveredTeam']);
+	exports.default = (0, _reactControllables2.default)(BracketGame, ['hoveredTeamId']);
 
 /***/ },
 /* 5 */
@@ -4488,15 +4488,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	BracketGenerator.propTypes = {
 	  games: _react.PropTypes.arrayOf(_GameShape2.default).isRequired,
 
-	  hoveredTeam: _react.PropTypes.object,
-	  onHoveredTeamChange: _react.PropTypes.func.isRequired,
+	  hoveredTeamId: _react.PropTypes.string,
+	  onHoveredTeamIdChange: _react.PropTypes.func.isRequired,
 	  onClickGame: _react.PropTypes.func
 	};
 	BracketGenerator.defaultProps = {
-	  hoveredTeam: null,
+	  hoveredTeamId: null,
 	  onClickGame: null
 	};
-	exports.default = (0, _reactControllables2.default)(BracketGenerator, ['hoveredTeam']);
+	exports.default = (0, _reactControllables2.default)(BracketGenerator, ['hoveredTeamId']);
 
 /***/ }
 /******/ ])

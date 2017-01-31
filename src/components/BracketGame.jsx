@@ -7,8 +7,8 @@ class BracketGame extends PureComponent {
   static propTypes = {
     game: GameShape.isRequired,
 
-    hoveredTeam: PropTypes.object,
-    onHoveredTeamChange: PropTypes.func.isRequired,
+    hoveredTeamId: PropTypes.string,
+    onHoveredTeamIdChange: PropTypes.func.isRequired,
 
     style: PropTypes.shape(
       {
@@ -25,7 +25,7 @@ class BracketGame extends PureComponent {
   };
 
   static defaultProps = {
-    hoveredTeam: null,
+    hoveredTeamId: null,
 
     style: {
       backgroundColor: '#58595e',
@@ -44,8 +44,8 @@ class BracketGame extends PureComponent {
     const {
       game,
 
-      hoveredTeam,
-      onHoveredTeamChange,
+      hoveredTeamId,
+      onHoveredTeamIdChange,
 
       style: {
         backgroundColor,
@@ -77,7 +77,7 @@ class BracketGame extends PureComponent {
       const tooltip = side.seed && side.team ? <title>{side.seed.displayName}</title> : null;
 
       return (
-        <g onMouseEnter={() => onHover(side && side.team ? side.team : null)} onMouseLeave={() => onHover(null)}>
+        <g onMouseEnter={() => onHover(side && side.team ? side.team.id : null)} onMouseLeave={() => onHover(null)}>
           {/* trigger mouse events on the entire block */}
           <rect x={x} y={y} height={22.5} width={200} fillOpacity={0}>
             {tooltip}
@@ -98,8 +98,8 @@ class BracketGame extends PureComponent {
       );
     };
 
-    const homeHovered = (home && home.team && home.team === hoveredTeam),
-      visitorHovered = (visitor && visitor.team && visitor.team === hoveredTeam);
+    const homeHovered = (home && home.team && home.team.id === hoveredTeamId),
+      visitorHovered = (visitor && visitor.team && visitor.team.id === hoveredTeamId);
 
     return (
       <svg width="200" height="68" {...rest} viewBox="0 0 200 68">
@@ -124,13 +124,13 @@ class BracketGame extends PureComponent {
         {/* the players */}
         {
           home ? (
-              <Side x={0} y={0} side={home} onHover={onHoveredTeamChange}/>
+              <Side x={0} y={0} side={home} onHover={onHoveredTeamIdChange}/>
             ) : null
         }
 
         {
           visitor ? (
-              <Side x={0} y={22.5} side={visitor} onHover={onHoveredTeamChange}/>
+              <Side x={0} y={22.5} side={visitor} onHover={onHoveredTeamIdChange}/>
             ) : null
         }
 
@@ -145,4 +145,4 @@ class BracketGame extends PureComponent {
   }
 }
 
-export default controllable(BracketGame, [ 'hoveredTeam' ]);
+export default controllable(BracketGame, [ 'hoveredTeamId' ]);

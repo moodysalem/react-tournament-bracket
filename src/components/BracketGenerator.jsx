@@ -50,13 +50,13 @@ class BracketGenerator extends PureComponent {
   static propTypes = {
     games: PropTypes.arrayOf(GameShape).isRequired,
 
-    hoveredTeam: PropTypes.object,
-    onHoveredTeamChange: PropTypes.func.isRequired,
+    hoveredTeamId: PropTypes.string,
+    onHoveredTeamIdChange: PropTypes.func.isRequired,
     onClickGame: PropTypes.func
   };
 
   static defaultProps = {
-    hoveredTeam: null,
+    hoveredTeamId: null,
     onClickGame: null
   };
 
@@ -98,4 +98,4 @@ class BracketGenerator extends PureComponent {
 }
 
 
-export default controllable(BracketGenerator, [ 'hoveredTeam' ]);
+export default controllable(BracketGenerator, [ 'hoveredTeamId' ]);

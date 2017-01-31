@@ -67,8 +67,8 @@ class Bracket extends PureComponent {
   static propTypes = {
     game: GameShape.isRequired,
 
-    hoveredTeam: PropTypes.object,
-    onHoveredTeamChange: PropTypes.func.isRequired,
+    hoveredTeamId: PropTypes.string,
+    onHoveredTeamIdChange: PropTypes.func.isRequired,
 
     onClickGame: PropTypes.func,
 
@@ -91,7 +91,7 @@ class Bracket extends PureComponent {
   };
 
   static defaultProps = {
-    hoveredTeam: null,
+    hoveredTeamId: null,
 
     onClickGame: null,
 
@@ -145,4 +145,4 @@ class Bracket extends PureComponent {
   }
 }
 
-export default controllable(Bracket, ['hoveredTeam']);
+export default controllable(Bracket, ['hoveredTeamId']);
