@@ -1,4 +1,5 @@
 # react-tournament-bracket
+![image](http://i.imgur.com/l02SBUl.png "Example Image")
 
 React components for rendering a tournament bracket
 
@@ -19,4 +20,5 @@ import {render} from 'react-dom';
 render(<Bracket game={game}/>, document.getElementById('app'));
 
 ```
+
 
