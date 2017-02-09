@@ -21,8 +21,8 @@ render(<Bracket game={game}/>, document.getElementById('app'));
 
 ```
 
-# Flexbox by the bracket generator
-The bracket generator uses flexbox classes provided by [flexbox-css](https://github.com/moodysalem/flexbox-css) to wrap its generated brackets. If you are using the bracket generator, you should include the flexbox-css, e.g.:
+# BracketGenerator uses flexbox
+The `BracketGenerator` uses flexbox classes provided by [flexbox-css](https://github.com/moodysalem/flexbox-css) to wrap its generated brackets. If you are using `BracketGenerator`, you should include the flexbox-css, e.g.:
 
 ```html
 <link rel="stylesheet" href="https://cdn.rawgit.com/moodysalem/flexbox-css/e5a121cb493c0452509708a9fb0524c671f31b4e/dist/flexbox-css-min.css" integrity="sha384-W3cb5bRHJiWSSwBvBHgWXGH8SdPZU6tA7DAa0S0JHJdvRlBqeKWBya2Lu9zrUMXK" crossorigin="anonymous">
