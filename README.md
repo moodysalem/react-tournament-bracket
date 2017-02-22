@@ -13,12 +13,10 @@ yarn add react-tournament-bracket
 
 # Usage
 ```jsx
-
 import {Bracket} from 'react-tournament-bracket';
 import {render} from 'react-dom';
 
 render(<Bracket game={game}/>, document.getElementById('app'));
-
 ```
 
 # BracketGenerator uses flexbox
