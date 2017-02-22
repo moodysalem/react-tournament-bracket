@@ -4444,19 +4444,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function render() {
 	      var _props = this.props,
 	          games = _props.games,
-	          rest = _objectWithoutProperties(_props, ['games']),
+	          style = _props.style,
+	          rest = _objectWithoutProperties(_props, ['games', 'style']),
 	          finals = this.state.finals;
 
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'display-flex flex-wrap-wrap align-items-center justify-content-center' },
+	        { style: _extends({ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center' }, style) },
 	        _underscore2.default.map(finals, function (_ref8) {
 	          var game = _ref8.game,
 	              height = _ref8.height;
 	          return _react2.default.createElement(
 	            'div',
-	            { key: game.id, className: 'flex-grow-1 text-center',
-	              style: { maxWidth: '100%' } },
+	            { key: game.id, className: 'text-center', style: { flexGrow: 1, maxWidth: '100%' } },
 	            _react2.default.createElement(
 	              'div',
 	              { className: 'max-width' },

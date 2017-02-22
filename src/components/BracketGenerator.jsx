@@ -71,17 +71,16 @@ class BracketGenerator extends PureComponent {
   }
 
   render() {
-    const { games, ...rest } = this.props,
+    const { games, style, ...rest } = this.props,
       { finals } = this.state;
 
     return (
-      <div className="display-flex flex-wrap-wrap align-items-center justify-content-center">
+      <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center', ...style }}>
         {
           _.map(
             finals,
             ({ game, height }) => (
-              <div key={game.id} className="flex-grow-1 text-center"
-                   style={{ maxWidth: '100%' }}>
+              <div key={game.id} className="text-center" style={{ flexGrow: 1, maxWidth: '100%' }}>
                 <div className="max-width">
                   <h3 className="text-center">{game.name} ({height} {height === 1 ? 'round' : 'rounds'})</h3>
                 </div>
