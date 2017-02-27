@@ -1,19 +1,21 @@
-import React, { PropTypes, PureComponent } from 'react';
-import _ from 'underscore';
-import BracketGame from './BracketGame';
-import GameShape from './GameShape';
-import cx from 'classnames';
-import winningPathLength from '../util/winningPathLength';
-import controllable from 'react-controllables';
+import React, { PropTypes, PureComponent } from "react";
+import _ from "underscore";
+import BracketGame from "./BracketGame";
+import GameShape from "./GameShape";
+import cx from "classnames";
+import winningPathLength from "../util/winningPathLength";
+import controllable from "react-controllables";
 
-const toBracketGames = ({ game, x, y, gameDimensions, roundSeparatorWidth, round, lineInfo, onClickGame, ...rest }) => {
+const toBracketGames = ({ game, x, y, gameDimensions, roundSeparatorWidth, round, lineInfo, homeOnTop, onClickGame, ...rest }) => {
   const { width: gameWidth, height: gameHeight } = gameDimensions;
 
   const ySep = gameHeight * Math.pow(2, round - 2);
 
   return [
     <g key={`${game.id}-${y}`}>
-      <BracketGame {...gameDimensions} {...rest} key={game.id} game={game} x={x} y={y}
+      <BracketGame {...gameDimensions} {...rest}
+                   key={game.id} game={game} x={x} y={y}
+                   homeOnTop={homeOnTop}
                    onClick={onClickGame ? () => onClickGame(game) : null}
                    className={cx({ 'cursor-pointer': onClickGame !== null })}/>
     </g>
@@ -21,12 +23,12 @@ const toBracketGames = ({ game, x, y, gameDimensions, roundSeparatorWidth, round
     _.chain(game.sides)
       .map((obj, side) => ({ ...obj, side }))
       // filter to the teams that come from winning other games
-      .filter(({ seed }) => seed && seed.sourceGame != null && seed.rank == 1)
+      .filter(({ seed }) => seed && seed.sourceGame !== null && seed.rank === 1)
       .map(
         ({ seed: { sourceGame }, side }) => {
           // we put visitor teams on the bottom
-          const isVisitor = side === 'visitor',
-            multiplier = isVisitor ? 1 : -1;
+          const isTop = side === 'home' ? homeOnTop : !homeOnTop,
+            multiplier = isTop ? -1 : 1;
 
           const pathInfo = [
             `M${x - lineInfo.separation} ${y + gameHeight / 2 + lineInfo.yOffset + multiplier * lineInfo.homeVisitorSpread}`,
@@ -42,6 +44,7 @@ const toBracketGames = ({ game, x, y, gameDimensions, roundSeparatorWidth, round
               toBracketGames(
                 {
                   game: sourceGame,
+                  homeOnTop,
                   lineInfo,
                   gameDimensions,
                   roundSeparatorWidth,
@@ -66,6 +69,8 @@ const toBracketGames = ({ game, x, y, gameDimensions, roundSeparatorWidth, round
 class Bracket extends PureComponent {
   static propTypes = {
     game: GameShape.isRequired,
+
+    homeOnTop: PropTypes.bool,
 
     hoveredTeamId: PropTypes.string,
     onHoveredTeamIdChange: PropTypes.func.isRequired,
@@ -92,6 +97,7 @@ class Bracket extends PureComponent {
 
   static defaultProps = {
     hoveredTeamId: null,
+    homeOnTop: true,
 
     onClickGame: null,
 
@@ -145,4 +151,4 @@ class Bracket extends PureComponent {
   }
 }
 
-export default controllable(Bracket, ['hoveredTeamId']);
+export default controllable(Bracket, [ 'hoveredTeamId' ]);

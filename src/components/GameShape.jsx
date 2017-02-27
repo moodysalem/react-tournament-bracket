@@ -1,4 +1,4 @@
-import { PropTypes } from 'react';
+import { PropTypes } from "react";
 
 // for nested proptypes
 const lazyFunction = f => ((...args) => f().apply(this, args));
@@ -40,6 +40,13 @@ GameShape = PropTypes.shape(
   {
     id: ID_TYPE,
     name: PropTypes.string.isRequired,
+    scheduled: PropTypes.number.isRequired,
+    court: PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      venue: PropTypes.shape({
+        name: PropTypes.string.isRequired
+      }).isRequired
+    }).isRequired,
     sides: PropTypes.shape(
       {
         [HOME]: TeamShape,

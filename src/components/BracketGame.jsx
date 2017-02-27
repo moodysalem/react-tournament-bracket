@@ -1,11 +1,13 @@
-import React, { PropTypes, PureComponent } from 'react';
-import { RectClipped } from './Clipped';
-import GameShape, { HOME, VISITOR } from './GameShape';
-import controllable from 'react-controllables';
+import React, { PropTypes, PureComponent } from "react";
+import { RectClipped } from "./Clipped";
+import GameShape, { HOME, VISITOR } from "./GameShape";
+import controllable from "react-controllables";
 
 class BracketGame extends PureComponent {
   static propTypes = {
     game: GameShape.isRequired,
+
+    homeOnTop: PropTypes.bool,
 
     hoveredTeamId: PropTypes.string,
     onHoveredTeamIdChange: PropTypes.func.isRequired,
@@ -25,6 +27,7 @@ class BracketGame extends PureComponent {
   };
 
   static defaultProps = {
+    homeOnTop: true,
     hoveredTeamId: null,
 
     style: {
@@ -57,17 +60,20 @@ class BracketGame extends PureComponent {
         gameNameStyle,
         teamSeparatorStyle
       },
+
+      homeOnTop,
+
       ...rest
     } = this.props;
 
-    const { name, sides: bySide } = game;
+    const { name, sides } = game;
 
-    const home = bySide[ HOME ],
-      visitor = bySide[ VISITOR ];
+    const top = sides[ homeOnTop ? HOME : VISITOR ],
+      bottom = sides[ homeOnTop ? VISITOR : HOME ];
 
-    const winnerBackground = (home && visitor && home.score && visitor.score && home.score.score !== visitor.score.score) ?
+    const winnerBackground = (top && bottom && top.score && bottom.score && top.score.score !== bottom.score.score) ?
       (
-        home.score.score > visitor.score.score ?
+        top.score.score > bottom.score.score ?
           <rect x="170" y="0" width="30" height="22.5" style={{ fill: winningScoreBackground }} rx="3" ry="3"/> :
           <rect x="170" y="22.5" width="30" height="22.5" style={{ fill: winningScoreBackground }} rx="3" ry="3"/>
       ) :
@@ -98,8 +104,8 @@ class BracketGame extends PureComponent {
       );
     };
 
-    const homeHovered = (home && home.team && home.team.id === hoveredTeamId),
-      visitorHovered = (visitor && visitor.team && visitor.team.id === hoveredTeamId);
+    const topHovered = (top && top.team && top.team.id === hoveredTeamId),
+      bottomHovered = (bottom && bottom.team && bottom.team.id === hoveredTeamId);
 
     return (
       <svg width="200" height="68" {...rest} viewBox="0 0 200 68">
@@ -108,11 +114,11 @@ class BracketGame extends PureComponent {
         {/* base background */}
         <rect x="0" y="0" width="200" height="45" fill={backgroundColor} rx="3" ry="3"/>
 
-        {/* background for the home team */}
-        <rect x="0" y="0" width="200" height="22.5" fill={homeHovered ? hoverBackgroundColor : backgroundColor} rx="3"
+        {/* background for the top team */}
+        <rect x="0" y="0" width="200" height="22.5" fill={topHovered ? hoverBackgroundColor : backgroundColor} rx="3"
               ry="3"/>
-        {/* background for the visitor team */}
-        <rect x="0" y="22.5" width="200" height="22.5" fill={visitorHovered ? hoverBackgroundColor : backgroundColor}
+        {/* background for the bottom team */}
+        <rect x="0" y="22.5" width="200" height="22.5" fill={bottomHovered ? hoverBackgroundColor : backgroundColor}
               rx="3" ry="3"/>
 
         {/* scores background */}
@@ -123,15 +129,15 @@ class BracketGame extends PureComponent {
 
         {/* the players */}
         {
-          home ? (
-              <Side x={0} y={0} side={home} onHover={onHoveredTeamIdChange}/>
-            ) : null
+          top ? (
+            <Side x={0} y={0} side={top} onHover={onHoveredTeamIdChange}/>
+          ) : null
         }
 
         {
-          visitor ? (
-              <Side x={0} y={22.5} side={visitor} onHover={onHoveredTeamIdChange}/>
-            ) : null
+          bottom ? (
+            <Side x={0} y={22.5} side={bottom} onHover={onHoveredTeamIdChange}/>
+          ) : null
         }
 
         <line x1="0" y1="22.5" x2="200" y2="22.5" style={teamSeparatorStyle}/>

@@ -58,24 +58,46 @@
   const { Bracket, BracketGame, BracketGenerator } = ReactTournamentBracket;
 
   class App extends React.PureComponent {
+    state = {
+      homeOnTop: true
+    };
+
     render() {
+      const { homeOnTop } = this.state;
+
       return (
               <div>
-                  <p>The core element in rendering the data is the <code>BracketGame</code> component</p>
-                  <BracketGame game={ROOT}/>
+                  <h3>Configuration</h3>
+                  <ul>
+                      <li>
+                          <label style={{ cursor: 'pointer' }}>
+                              Home On Top
+                              <input type="checkbox" style={{ marginLeft: 8 }}
+                                     onChange={({ target: { checked: homeOnTop } }) => this.setState({ homeOnTop })}
+                                     checked={homeOnTop}/>
+                          </label>
+                      </li>
+                  </ul>
 
+                  <h3>BracketGame</h3>
+                  <p>The core element in rendering the data is the <code>BracketGame</code> component</p>
+                  <BracketGame game={ROOT} homeOnTop={homeOnTop}/>
+
+                  <h3>Bracket</h3>
                   <p>
                       The bracket is rendered using a <code>Bracket</code> component, which takes the final game of the
                       bracket. The game shape is a graph, so a single game should contain all the information required
                       to render the bracket.
                   </p>
-                  <Bracket game={ROOT} defaultHoveredTeamId={null}/>
+                  <Bracket game={ROOT} defaultHoveredTeamId={null} homeOnTop={homeOnTop}/>
 
+                  <h3>BracketGenerator</h3>
                   <p>
                       The <code>BracketGenerator</code> takes an array of games and renders a bracket for every root
                       game. It also places each <code>Bracket</code> in nicely scrolling parent divs.
                   </p>
-                  <BracketGenerator games={GAMES} onClickGame={g => alert('clicked game: ' + g.name)}/>
+                  <BracketGenerator games={GAMES} homeOnTop={homeOnTop}
+                                    onClickGame={g => alert('clicked game: ' + g.name)}/>
               </div>
       );
     }

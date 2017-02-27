@@ -88,7 +88,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -144,8 +144,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      roundSeparatorWidth = _ref.roundSeparatorWidth,
 	      round = _ref.round,
 	      lineInfo = _ref.lineInfo,
+	      homeOnTop = _ref.homeOnTop,
 	      onClickGame = _ref.onClickGame,
-	      rest = _objectWithoutProperties(_ref, ['game', 'x', 'y', 'gameDimensions', 'roundSeparatorWidth', 'round', 'lineInfo', 'onClickGame']);
+	      rest = _objectWithoutProperties(_ref, ["game", "x", "y", "gameDimensions", "roundSeparatorWidth", "round", "lineInfo", "homeOnTop", "onClickGame"]);
 
 	  var gameWidth = gameDimensions.width,
 	      gameHeight = gameDimensions.height;
@@ -154,9 +155,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var ySep = gameHeight * Math.pow(2, round - 2);
 
 	  return [_react2.default.createElement(
-	    'g',
-	    { key: game.id + '-' + y },
-	    _react2.default.createElement(_BracketGame2.default, _extends({}, gameDimensions, rest, { key: game.id, game: game, x: x, y: y,
+	    "g",
+	    { key: game.id + "-" + y },
+	    _react2.default.createElement(_BracketGame2.default, _extends({}, gameDimensions, rest, {
+	      key: game.id, game: game, x: x, y: y,
+	      homeOnTop: homeOnTop,
 	      onClick: onClickGame ? function () {
 	        return onClickGame(game);
 	      } : null,
@@ -167,19 +170,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	  // filter to the teams that come from winning other games
 	  .filter(function (_ref2) {
 	    var seed = _ref2.seed;
-	    return seed && seed.sourceGame != null && seed.rank == 1;
+	    return seed && seed.sourceGame !== null && seed.rank === 1;
 	  }).map(function (_ref3) {
 	    var sourceGame = _ref3.seed.sourceGame,
 	        side = _ref3.side;
 
 	    // we put visitor teams on the bottom
-	    var isVisitor = side === 'visitor',
-	        multiplier = isVisitor ? 1 : -1;
+	    var isTop = side === 'home' ? homeOnTop : !homeOnTop,
+	        multiplier = isTop ? -1 : 1;
 
-	    var pathInfo = ['M' + (x - lineInfo.separation) + ' ' + (y + gameHeight / 2 + lineInfo.yOffset + multiplier * lineInfo.homeVisitorSpread), 'H' + (x - roundSeparatorWidth / 2), 'V' + (y + gameHeight / 2 + lineInfo.yOffset + ySep / 2 * multiplier), 'H' + (x - roundSeparatorWidth + lineInfo.separation)];
+	    var pathInfo = ["M" + (x - lineInfo.separation) + " " + (y + gameHeight / 2 + lineInfo.yOffset + multiplier * lineInfo.homeVisitorSpread), "H" + (x - roundSeparatorWidth / 2), "V" + (y + gameHeight / 2 + lineInfo.yOffset + ySep / 2 * multiplier), "H" + (x - roundSeparatorWidth + lineInfo.separation)];
 
-	    return [_react2.default.createElement('path', { key: game.id + '-' + side + '-' + y + '-path', d: pathInfo.join(' '), fill: 'transparent', stroke: 'black' })].concat(toBracketGames(_extends({
+	    return [_react2.default.createElement("path", { key: game.id + "-" + side + "-" + y + "-path", d: pathInfo.join(' '), fill: "transparent", stroke: "black" })].concat(toBracketGames(_extends({
 	      game: sourceGame,
+	      homeOnTop: homeOnTop,
 	      lineInfo: lineInfo,
 	      gameDimensions: gameDimensions,
 	      roundSeparatorWidth: roundSeparatorWidth,
@@ -205,14 +209,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  _createClass(Bracket, [{
-	    key: 'render',
+	    key: "render",
 	    value: function render() {
 	      var _props = this.props,
 	          game = _props.game,
 	          gameDimensions = _props.gameDimensions,
 	          svgPadding = _props.svgPadding,
 	          roundSeparatorWidth = _props.roundSeparatorWidth,
-	          rest = _objectWithoutProperties(_props, ['game', 'gameDimensions', 'svgPadding', 'roundSeparatorWidth']);
+	          rest = _objectWithoutProperties(_props, ["game", "gameDimensions", "svgPadding", "roundSeparatorWidth"]);
 
 	      var numRounds = (0, _winningPathLength2.default)(game);
 
@@ -222,10 +226,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	      };
 
 	      return _react2.default.createElement(
-	        'svg',
+	        "svg",
 	        svgDimensions,
 	        _react2.default.createElement(
-	          'g',
+	          "g",
 	          null,
 	          toBracketGames(_extends({
 	            gameDimensions: gameDimensions,
@@ -249,6 +253,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	Bracket.propTypes = {
 	  game: _GameShape2.default.isRequired,
 
+	  homeOnTop: _react.PropTypes.bool,
+
 	  hoveredTeamId: _react.PropTypes.string,
 	  onHoveredTeamIdChange: _react.PropTypes.func.isRequired,
 
@@ -269,6 +275,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 	Bracket.defaultProps = {
 	  hoveredTeamId: null,
+	  homeOnTop: true,
 
 	  onClickGame: null,
 
@@ -304,7 +311,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -348,7 +355,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  _createClass(BracketGame, [{
-	    key: 'render',
+	    key: "render",
 	    value: function render() {
 	      var _props = this.props,
 	          game = _props.game,
@@ -363,16 +370,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	          teamScoreStyle = _props$style.teamScoreStyle,
 	          gameNameStyle = _props$style.gameNameStyle,
 	          teamSeparatorStyle = _props$style.teamSeparatorStyle,
-	          rest = _objectWithoutProperties(_props, ['game', 'hoveredTeamId', 'onHoveredTeamIdChange', 'style']);
+	          homeOnTop = _props.homeOnTop,
+	          rest = _objectWithoutProperties(_props, ["game", "hoveredTeamId", "onHoveredTeamIdChange", "style", "homeOnTop"]);
 
 	      var name = game.name,
-	          bySide = game.sides;
+	          sides = game.sides;
 
 
-	      var home = bySide[_GameShape.HOME],
-	          visitor = bySide[_GameShape.VISITOR];
+	      var top = sides[homeOnTop ? _GameShape.HOME : _GameShape.VISITOR],
+	          bottom = sides[homeOnTop ? _GameShape.VISITOR : _GameShape.HOME];
 
-	      var winnerBackground = home && visitor && home.score && visitor.score && home.score.score !== visitor.score.score ? home.score.score > visitor.score.score ? _react2.default.createElement('rect', { x: '170', y: '0', width: '30', height: '22.5', style: { fill: winningScoreBackground }, rx: '3', ry: '3' }) : _react2.default.createElement('rect', { x: '170', y: '22.5', width: '30', height: '22.5', style: { fill: winningScoreBackground }, rx: '3', ry: '3' }) : null;
+	      var winnerBackground = top && bottom && top.score && bottom.score && top.score.score !== bottom.score.score ? top.score.score > bottom.score.score ? _react2.default.createElement("rect", { x: "170", y: "0", width: "30", height: "22.5", style: { fill: winningScoreBackground }, rx: "3", ry: "3" }) : _react2.default.createElement("rect", { x: "170", y: "22.5", width: "30", height: "22.5", style: { fill: winningScoreBackground }, rx: "3", ry: "3" }) : null;
 
 	      var Side = function Side(_ref) {
 	        var x = _ref.x,
@@ -381,20 +389,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	            onHover = _ref.onHover;
 
 	        var tooltip = side.seed && side.team ? _react2.default.createElement(
-	          'title',
+	          "title",
 	          null,
 	          side.seed.displayName
 	        ) : null;
 
 	        return _react2.default.createElement(
-	          'g',
+	          "g",
 	          { onMouseEnter: function onMouseEnter() {
 	              return onHover(side && side.team ? side.team.id : null);
 	            }, onMouseLeave: function onMouseLeave() {
 	              return onHover(null);
 	            } },
 	          _react2.default.createElement(
-	            'rect',
+	            "rect",
 	            { x: x, y: y, height: 22.5, width: 200, fillOpacity: 0 },
 	            tooltip
 	          ),
@@ -402,7 +410,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            _Clipped.RectClipped,
 	            { x: x, y: y, height: 22.5, width: 165 },
 	            _react2.default.createElement(
-	              'text',
+	              "text",
 	              { x: x + 5, y: y + 16,
 	                style: _extends({}, teamNameStyle, { fontStyle: side.seed && side.seed.sourcePool ? 'italic' : null }) },
 	              tooltip,
@@ -410,32 +418,32 @@ return /******/ (function(modules) { // webpackBootstrap
 	            )
 	          ),
 	          _react2.default.createElement(
-	            'text',
-	            { x: x + 185, y: y + 16, style: teamScoreStyle, textAnchor: 'middle' },
+	            "text",
+	            { x: x + 185, y: y + 16, style: teamScoreStyle, textAnchor: "middle" },
 	            side.score ? side.score.score : null
 	          )
 	        );
 	      };
 
-	      var homeHovered = home && home.team && home.team.id === hoveredTeamId,
-	          visitorHovered = visitor && visitor.team && visitor.team.id === hoveredTeamId;
+	      var topHovered = top && top.team && top.team.id === hoveredTeamId,
+	          bottomHovered = bottom && bottom.team && bottom.team.id === hoveredTeamId;
 
 	      return _react2.default.createElement(
-	        'svg',
-	        _extends({ width: '200', height: '68' }, rest, { viewBox: '0 0 200 68' }),
-	        _react2.default.createElement('rect', { x: '0', y: '0', width: '200', height: '45', fill: backgroundColor, rx: '3', ry: '3' }),
-	        _react2.default.createElement('rect', { x: '0', y: '0', width: '200', height: '22.5', fill: homeHovered ? hoverBackgroundColor : backgroundColor, rx: '3',
-	          ry: '3' }),
-	        _react2.default.createElement('rect', { x: '0', y: '22.5', width: '200', height: '22.5', fill: visitorHovered ? hoverBackgroundColor : backgroundColor,
-	          rx: '3', ry: '3' }),
-	        _react2.default.createElement('rect', { x: '170', y: '0', width: '30', height: '45', fill: scoreBackground, rx: '3', ry: '3' }),
+	        "svg",
+	        _extends({ width: "200", height: "68" }, rest, { viewBox: "0 0 200 68" }),
+	        _react2.default.createElement("rect", { x: "0", y: "0", width: "200", height: "45", fill: backgroundColor, rx: "3", ry: "3" }),
+	        _react2.default.createElement("rect", { x: "0", y: "0", width: "200", height: "22.5", fill: topHovered ? hoverBackgroundColor : backgroundColor, rx: "3",
+	          ry: "3" }),
+	        _react2.default.createElement("rect", { x: "0", y: "22.5", width: "200", height: "22.5", fill: bottomHovered ? hoverBackgroundColor : backgroundColor,
+	          rx: "3", ry: "3" }),
+	        _react2.default.createElement("rect", { x: "170", y: "0", width: "30", height: "45", fill: scoreBackground, rx: "3", ry: "3" }),
 	        winnerBackground,
-	        home ? _react2.default.createElement(Side, { x: 0, y: 0, side: home, onHover: onHoveredTeamIdChange }) : null,
-	        visitor ? _react2.default.createElement(Side, { x: 0, y: 22.5, side: visitor, onHover: onHoveredTeamIdChange }) : null,
-	        _react2.default.createElement('line', { x1: '0', y1: '22.5', x2: '200', y2: '22.5', style: teamSeparatorStyle }),
+	        top ? _react2.default.createElement(Side, { x: 0, y: 0, side: top, onHover: onHoveredTeamIdChange }) : null,
+	        bottom ? _react2.default.createElement(Side, { x: 0, y: 22.5, side: bottom, onHover: onHoveredTeamIdChange }) : null,
+	        _react2.default.createElement("line", { x1: "0", y1: "22.5", x2: "200", y2: "22.5", style: teamSeparatorStyle }),
 	        _react2.default.createElement(
-	          'text',
-	          { x: '100', y: '56', textAnchor: 'middle', style: gameNameStyle },
+	          "text",
+	          { x: "100", y: "56", textAnchor: "middle", style: gameNameStyle },
 	          name
 	        )
 	      );
@@ -447,6 +455,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	BracketGame.propTypes = {
 	  game: _GameShape2.default.isRequired,
+
+	  homeOnTop: _react.PropTypes.bool,
 
 	  hoveredTeamId: _react.PropTypes.string,
 	  onHoveredTeamIdChange: _react.PropTypes.func.isRequired,
@@ -463,6 +473,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  })
 	};
 	BracketGame.defaultProps = {
+	  homeOnTop: true,
 	  hoveredTeamId: null,
 
 	  style: {
@@ -887,6 +898,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	GameShape = _react.PropTypes.shape({
 	  id: ID_TYPE,
 	  name: _react.PropTypes.string.isRequired,
+	  scheduled: _react.PropTypes.number.isRequired,
+	  court: _react.PropTypes.shape({
+	    name: _react.PropTypes.string.isRequired,
+	    venue: _react.PropTypes.shape({
+	      name: _react.PropTypes.string.isRequired
+	    }).isRequired
+	  }).isRequired,
 	  sides: _react.PropTypes.shape((_PropTypes$shape = {}, _defineProperty(_PropTypes$shape, HOME, TeamShape), _defineProperty(_PropTypes$shape, VISITOR, TeamShape), _PropTypes$shape)).isRequired
 	});
 
@@ -4318,7 +4336,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -4431,7 +4449,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  _createClass(BracketGenerator, [{
-	    key: 'componentWillReceiveProps',
+	    key: "componentWillReceiveProps",
 	    value: function componentWillReceiveProps(_ref7) {
 	      var games = _ref7.games;
 
@@ -4440,39 +4458,39 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	    }
 	  }, {
-	    key: 'render',
+	    key: "render",
 	    value: function render() {
 	      var _props = this.props,
 	          games = _props.games,
 	          style = _props.style,
-	          rest = _objectWithoutProperties(_props, ['games', 'style']),
+	          rest = _objectWithoutProperties(_props, ["games", "style"]),
 	          finals = this.state.finals;
 
 	      return _react2.default.createElement(
-	        'div',
+	        "div",
 	        { style: _extends({ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center' }, style) },
 	        _underscore2.default.map(finals, function (_ref8) {
 	          var game = _ref8.game,
 	              height = _ref8.height;
 	          return _react2.default.createElement(
-	            'div',
-	            { key: game.id, className: 'text-center', style: { flexGrow: 1, maxWidth: '100%' } },
+	            "div",
+	            { key: game.id, className: "text-center", style: { flexGrow: 1, maxWidth: '100%' } },
 	            _react2.default.createElement(
-	              'div',
-	              { className: 'max-width' },
+	              "div",
+	              { className: "max-width" },
 	              _react2.default.createElement(
-	                'h3',
-	                { className: 'text-center' },
+	                "h3",
+	                { className: "text-center" },
 	                game.name,
-	                ' (',
+	                " (",
 	                height,
-	                ' ',
+	                " ",
 	                height === 1 ? 'round' : 'rounds',
-	                ')'
+	                ")"
 	              )
 	            ),
 	            _react2.default.createElement(
-	              'div',
+	              "div",
 	              { style: { maxWidth: '100%', overflow: 'auto', WebkitOverflowScrolling: 'touch' } },
 	              _react2.default.createElement(_Bracket2.default, _extends({ game: game }, rest))
 	            )

@@ -1,9 +1,9 @@
-import React, { PropTypes, PureComponent } from 'react';
-import _ from 'underscore';
-import Bracket from './Bracket';
-import winningPathLength from '../util/winningPathLength';
-import GameShape from './GameShape';
-import controllable from 'react-controllables';
+import React, { PropTypes, PureComponent } from "react";
+import _ from "underscore";
+import Bracket from "./Bracket";
+import winningPathLength from "../util/winningPathLength";
+import GameShape from "./GameShape";
+import controllable from "react-controllables";
 
 const makeFinals = ({ games }) => {
   const isInGroup = (() => {
