@@ -102,7 +102,7 @@ class Bracket extends PureComponent {
     onClickGame: null,
 
     gameDimensions: {
-      height: 68,
+      height: 80,
       width: 200
     },
 
@@ -110,9 +110,9 @@ class Bracket extends PureComponent {
     roundSeparatorWidth: 24,
 
     lineInfo: {
-      yOffset: -12,
+      yOffset: -6,
       separation: 6,
-      homeVisitorSpread: 12
+      homeVisitorSpread: 11
     }
   };
 

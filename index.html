@@ -52,8 +52,7 @@
   'use strict';
 
   const GAMES = JSOG.decode(DEMO_DATA);
-  const byId = _.indexBy(GAMES, 'id');
-  const ROOT = byId[ '2403fc5a-a4a8-4838-92d9-6b3dacb4c05d' ];
+  const ROOT = _.findWhere(GAMES, { id: '35b0745d-ef13-4255-8c40-c9daa95e4cc4' });
 
   const { Bracket, BracketGame, BracketGenerator } = ReactTournamentBracket;
 
@@ -93,8 +92,10 @@
 
                   <h3>BracketGenerator</h3>
                   <p>
-                      The <code>BracketGenerator</code> takes an array of games and renders a bracket for every root
-                      game. It also places each <code>Bracket</code> in nicely scrolling parent divs.
+                      The <code>BracketGenerator</code> component takes an array of games and renders a separate
+                      <code>Bracket</code> for each root game.
+                      It also places each <code>Bracket</code> in mobile friendly parent <code>div</code>s and synchronizes
+                      the highlighted teams across brackets.
                   </p>
                   <BracketGenerator games={GAMES} homeOnTop={homeOnTop}
                                     onClickGame={g => alert('clicked game: ' + g.name)}/>
