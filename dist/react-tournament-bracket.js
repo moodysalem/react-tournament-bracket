@@ -339,6 +339,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _moment2 = _interopRequireDefault(_moment);
 
+	var _underscore = __webpack_require__(3);
+
+	var _underscore2 = _interopRequireDefault(_underscore);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
@@ -381,6 +385,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var name = game.name,
 	          sides = game.sides,
 	          scheduled = game.scheduled,
+	          bracketLabel = game.bracketLabel,
 	          _game$court = game.court;
 	      _game$court = _game$court === undefined ? {} : _game$court;
 	      var courtName = _game$court.name,
@@ -461,7 +466,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        _react2.default.createElement(
 	          "text",
 	          { x: "100", y: "68", textAnchor: "middle", style: gameNameStyle },
-	          name
+	          _underscore2.default.compact([name, bracketLabel]).join(' - ')
 	        )
 	      );
 	    }
@@ -918,7 +923,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  id: ID_TYPE,
 	  // the game name
 	  name: _react.PropTypes.string.isRequired,
-	  // the unix timestamp of the game-transformed to a human-readable time using moment
+	  // optional: the label for the game within the bracket, e.g. Gold Finals, Silver Semi-Finals
+	  bracketLabel: _react.PropTypes.string,
+	  // the unix timestamp of the game-will be transformed to a human-readable time using momentjs
 	  scheduled: _react.PropTypes.number.isRequired,
 	  // where the game is played
 	  court: _react.PropTypes.shape({
@@ -19404,7 +19411,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	              _react2.default.createElement(
 	                "h3",
 	                { className: "text-center" },
-	                game.name,
+	                game.bracketLabel || game.name,
 	                " (",
 	                height,
 	                " ",

@@ -82,7 +82,7 @@ class BracketGenerator extends PureComponent {
             ({ game, height }) => (
               <div key={game.id} className="text-center" style={{ flexGrow: 1, maxWidth: '100%' }}>
                 <div className="max-width">
-                  <h3 className="text-center">{game.name} ({height} {height === 1 ? 'round' : 'rounds'})</h3>
+                  <h3 className="text-center">{game.bracketLabel || game.name} ({height} {height === 1 ? 'round' : 'rounds'})</h3>
                 </div>
                 <div style={{ maxWidth: '100%', overflow: 'auto', WebkitOverflowScrolling: 'touch' }}>
                   <Bracket game={game} {...rest}/>

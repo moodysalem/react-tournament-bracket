@@ -42,7 +42,9 @@ GameShape = PropTypes.shape(
     id: ID_TYPE,
     // the game name
     name: PropTypes.string.isRequired,
-    // the unix timestamp of the game-transformed to a human-readable time using moment
+    // optional: the label for the game within the bracket, e.g. Gold Finals, Silver Semi-Finals
+    bracketLabel: PropTypes.string,
+    // the unix timestamp of the game-will be transformed to a human-readable time using momentjs
     scheduled: PropTypes.number.isRequired,
     // where the game is played
     court: PropTypes.shape({

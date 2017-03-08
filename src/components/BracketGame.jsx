@@ -3,6 +3,7 @@ import { RectClipped } from "./Clipped";
 import GameShape, { HOME, VISITOR } from "./GameShape";
 import controllable from "react-controllables";
 import moment from "moment";
+import _ from "underscore";
 
 class BracketGame extends PureComponent {
   static propTypes = {
@@ -69,7 +70,7 @@ class BracketGame extends PureComponent {
       ...rest
     } = this.props;
 
-    const { name, sides, scheduled, court: { name: courtName, venue: { name: venueName } = {} } = {} } = game;
+    const { name, sides, scheduled, bracketLabel, court: { name: courtName, venue: { name: venueName } = {} } = {} } = game;
 
     const top = sides[ homeOnTop ? HOME : VISITOR ],
       bottom = sides[ homeOnTop ? VISITOR : HOME ];
@@ -152,7 +153,7 @@ class BracketGame extends PureComponent {
 
         {/* game name */}
         <text x="100" y="68" textAnchor="middle" style={gameNameStyle}>
-          {name}
+          {_.compact([ name, bracketLabel ]).join(' - ')}
         </text>
       </svg>
     );
