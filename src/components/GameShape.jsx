@@ -52,7 +52,7 @@ GameShape = PropTypes.shape(
       venue: PropTypes.shape({
         name: PropTypes.string.isRequired
       }).isRequired
-    }).isRequired,
+    }),
     // only two sides are supported-home and visitor
     sides: PropTypes.shape(
       {

@@ -70,7 +70,7 @@ class BracketGame extends PureComponent {
       ...rest
     } = this.props;
 
-    const { name, sides, scheduled, bracketLabel, court: { name: courtName, venue: { name: venueName } = {} } = {} } = game;
+    const { name, sides, scheduled, bracketLabel } = game;
 
     const top = sides[ homeOnTop ? HOME : VISITOR ],
       bottom = sides[ homeOnTop ? VISITOR : HOME ];

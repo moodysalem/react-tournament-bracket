@@ -385,13 +385,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var name = game.name,
 	          sides = game.sides,
 	          scheduled = game.scheduled,
-	          bracketLabel = game.bracketLabel,
-	          _game$court = game.court;
-	      _game$court = _game$court === undefined ? {} : _game$court;
-	      var courtName = _game$court.name,
-	          _game$court$venue = _game$court.venue;
-	      _game$court$venue = _game$court$venue === undefined ? {} : _game$court$venue;
-	      var venueName = _game$court$venue.name;
+	          bracketLabel = game.bracketLabel;
 
 
 	      var top = sides[homeOnTop ? _GameShape.HOME : _GameShape.VISITOR],
@@ -933,7 +927,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    venue: _react.PropTypes.shape({
 	      name: _react.PropTypes.string.isRequired
 	    }).isRequired
-	  }).isRequired,
+	  }),
 	  // only two sides are supported-home and visitor
 	  sides: _react.PropTypes.shape((_PropTypes$shape = {}, _defineProperty(_PropTypes$shape, HOME, SideShape), _defineProperty(_PropTypes$shape, VISITOR, SideShape), _PropTypes$shape)).isRequired
 	});
