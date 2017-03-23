@@ -69,7 +69,7 @@
                   <h3>Configuration</h3>
                   <ul>
                       <li>
-                          <label style={{ cursor: 'pointer' }}>
+                          <label style={{ cursor: 'pointer', userSelect: 'none' }}>
                               Home On Top
                               <input type="checkbox" style={{ marginLeft: 8 }}
                                      onChange={({ target: { checked: homeOnTop } }) => this.setState({ homeOnTop })}
@@ -94,7 +94,8 @@
                   <p>
                       The <code>BracketGenerator</code> component takes an array of games and renders a separate
                       <code>Bracket</code> for each root game.
-                      It also places each <code>Bracket</code> in mobile friendly parent <code>div</code>s and synchronizes
+                      It also places each <code>Bracket</code> in mobile friendly parent <code>div</code>s and
+                      synchronizes
                       the highlighted teams across brackets.
                   </p>
                   <BracketGenerator games={GAMES} homeOnTop={homeOnTop}
