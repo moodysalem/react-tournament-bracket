@@ -19385,7 +19385,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          return _react2.default.createElement(
 	            "div",
 	            { key: game.id, style: { textAlign: 'center', flexGrow: 1, maxWidth: '100%' } },
-	            _react2.default.createElement(BracketTitle, { game: game, height: height }),
+	            _react2.default.createElement(TitleComponent, { game: game, height: height }),
 	            _react2.default.createElement(
 	              "div",
 	              { style: { maxWidth: '100%', overflow: 'auto', WebkitOverflowScrolling: 'touch' } },

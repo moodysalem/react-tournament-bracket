@@ -104,7 +104,7 @@ class BracketGenerator extends PureComponent {
             finals,
             ({ game, height }) => (
               <div key={game.id} style={{ textAlign: 'center', flexGrow: 1, maxWidth: '100%' }}>
-                <BracketTitle game={game} height={height}/>
+                <TitleComponent game={game} height={height}/>
                 <div style={{ maxWidth: '100%', overflow: 'auto', WebkitOverflowScrolling: 'touch' }}>
                   <Bracket game={game} {...rest}/>
                 </div>
