@@ -44,11 +44,33 @@ const makeFinals = ({ games }) => {
 };
 
 /**
+ * The default title component used for each bracket, receives the game and the height of the bracket
+ */
+class BracketTitle extends PureComponent {
+  static propTypes = {
+    game: GameShape.isRequired,
+    height: PropTypes.number.isRequired
+  };
+
+  render() {
+    const { game, height } = this.props;
+
+    return (
+      <h3 style={{ textAlign: 'center' }}>
+        {game.bracketLabel || game.name} ({height} {height === 1 ? 'round' : 'rounds'})
+      </h3>
+    );
+  }
+}
+
+/**
  * Displays the brackets for some set of games sorted by bracket height
  */
 class BracketGenerator extends PureComponent {
   static propTypes = {
     games: PropTypes.arrayOf(GameShape).isRequired,
+
+    titleComponent: PropTypes.func,
 
     hoveredTeamId: PropTypes.string,
     onHoveredTeamIdChange: PropTypes.func.isRequired,
@@ -57,7 +79,8 @@ class BracketGenerator extends PureComponent {
 
   static defaultProps = {
     hoveredTeamId: null,
-    onClickGame: null
+    onClickGame: null,
+    titleComponent: BracketTitle
   };
 
   state = {
@@ -71,7 +94,7 @@ class BracketGenerator extends PureComponent {
   }
 
   render() {
-    const { games, style, ...rest } = this.props,
+    const { games, titleComponent: TitleComponent, style, ...rest } = this.props,
       { finals } = this.state;
 
     return (
@@ -80,10 +103,8 @@ class BracketGenerator extends PureComponent {
           _.map(
             finals,
             ({ game, height }) => (
-              <div key={game.id} className="text-center" style={{ flexGrow: 1, maxWidth: '100%' }}>
-                <div className="max-width">
-                  <h3 className="text-center">{game.bracketLabel || game.name} ({height} {height === 1 ? 'round' : 'rounds'})</h3>
-                </div>
+              <div key={game.id} style={{ textAlign: 'center', flexGrow: 1, maxWidth: '100%' }}>
+                <BracketTitle game={game} height={height}/>
                 <div style={{ maxWidth: '100%', overflow: 'auto', WebkitOverflowScrolling: 'touch' }}>
                   <Bracket game={game} {...rest}/>
                 </div>

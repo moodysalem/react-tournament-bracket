@@ -2,7 +2,6 @@ import React, { PropTypes, PureComponent } from "react";
 import _ from "underscore";
 import BracketGame from "./BracketGame";
 import GameShape from "./GameShape";
-import cx from "classnames";
 import winningPathLength from "../util/winningPathLength";
 import controllable from "react-controllables";
 
@@ -17,7 +16,7 @@ const toBracketGames = ({ game, x, y, gameDimensions, roundSeparatorWidth, round
                    key={game.id} game={game} x={x} y={y}
                    homeOnTop={homeOnTop}
                    onClick={onClickGame ? () => onClickGame(game) : null}
-                   className={cx({ 'cursor-pointer': onClickGame !== null })}/>
+                   style={{ cursor: onClickGame !== null ? 'pointer' : null }}/>
     </g>
   ].concat(
     _.chain(game.sides)

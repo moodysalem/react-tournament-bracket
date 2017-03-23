@@ -69,7 +69,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _BracketGame2 = _interopRequireDefault(_BracketGame);
 
-	var _BracketGenerator = __webpack_require__(152);
+	var _BracketGenerator = __webpack_require__(151);
 
 	var _BracketGenerator2 = _interopRequireDefault(_BracketGenerator);
 
@@ -114,11 +114,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _GameShape2 = _interopRequireDefault(_GameShape);
 
-	var _classnames = __webpack_require__(150);
-
-	var _classnames2 = _interopRequireDefault(_classnames);
-
-	var _winningPathLength = __webpack_require__(151);
+	var _winningPathLength = __webpack_require__(150);
 
 	var _winningPathLength2 = _interopRequireDefault(_winningPathLength);
 
@@ -163,7 +159,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      onClick: onClickGame ? function () {
 	        return onClickGame(game);
 	      } : null,
-	      className: (0, _classnames2.default)({ 'cursor-pointer': onClickGame !== null }) }))
+	      style: { cursor: onClickGame !== null ? 'pointer' : null } }))
 	  )].concat(_underscore2.default.chain(game.sides).map(function (obj, side) {
 	    return _extends({}, obj, { side: side });
 	  })
@@ -369,18 +365,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	          game = _props.game,
 	          hoveredTeamId = _props.hoveredTeamId,
 	          onHoveredTeamIdChange = _props.onHoveredTeamIdChange,
-	          _props$style = _props.style,
-	          backgroundColor = _props$style.backgroundColor,
-	          hoverBackgroundColor = _props$style.hoverBackgroundColor,
-	          scoreBackground = _props$style.scoreBackground,
-	          winningScoreBackground = _props$style.winningScoreBackground,
-	          teamNameStyle = _props$style.teamNameStyle,
-	          teamScoreStyle = _props$style.teamScoreStyle,
-	          gameNameStyle = _props$style.gameNameStyle,
-	          gameTimeStyle = _props$style.gameTimeStyle,
-	          teamSeparatorStyle = _props$style.teamSeparatorStyle,
+	          _props$styles = _props.styles,
+	          backgroundColor = _props$styles.backgroundColor,
+	          hoverBackgroundColor = _props$styles.hoverBackgroundColor,
+	          scoreBackground = _props$styles.scoreBackground,
+	          winningScoreBackground = _props$styles.winningScoreBackground,
+	          teamNameStyle = _props$styles.teamNameStyle,
+	          teamScoreStyle = _props$styles.teamScoreStyle,
+	          gameNameStyle = _props$styles.gameNameStyle,
+	          gameTimeStyle = _props$styles.gameTimeStyle,
+	          teamSeparatorStyle = _props$styles.teamSeparatorStyle,
 	          homeOnTop = _props.homeOnTop,
-	          rest = _objectWithoutProperties(_props, ["game", "hoveredTeamId", "onHoveredTeamIdChange", "style", "homeOnTop"]);
+	          rest = _objectWithoutProperties(_props, ["game", "hoveredTeamId", "onHoveredTeamIdChange", "styles", "homeOnTop"]);
 
 	      var name = game.name,
 	          sides = game.sides,
@@ -477,7 +473,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  hoveredTeamId: _react.PropTypes.string,
 	  onHoveredTeamIdChange: _react.PropTypes.func.isRequired,
 
-	  style: _react.PropTypes.shape({
+	  styles: _react.PropTypes.shape({
 	    backgroundColor: _react.PropTypes.string.isRequired,
 	    hoverBackgroundColor: _react.PropTypes.string.isRequired,
 	    scoreBackground: _react.PropTypes.string.isRequired,
@@ -492,7 +488,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  homeOnTop: true,
 	  hoveredTeamId: null,
 
-	  style: {
+	  styles: {
 	    backgroundColor: '#58595e',
 	    hoverBackgroundColor: '#222',
 
@@ -19175,60 +19171,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 150 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
-	  Copyright (c) 2016 Jed Watson.
-	  Licensed under the MIT License (MIT), see
-	  http://jedwatson.github.io/classnames
-	*/
-	/* global define */
-
-	(function () {
-		'use strict';
-
-		var hasOwn = {}.hasOwnProperty;
-
-		function classNames () {
-			var classes = [];
-
-			for (var i = 0; i < arguments.length; i++) {
-				var arg = arguments[i];
-				if (!arg) continue;
-
-				var argType = typeof arg;
-
-				if (argType === 'string' || argType === 'number') {
-					classes.push(arg);
-				} else if (Array.isArray(arg)) {
-					classes.push(classNames.apply(null, arg));
-				} else if (argType === 'object') {
-					for (var key in arg) {
-						if (hasOwn.call(arg, key) && arg[key]) {
-							classes.push(key);
-						}
-					}
-				}
-			}
-
-			return classes.join(' ');
-		}
-
-		if (typeof module !== 'undefined' && module.exports) {
-			module.exports = classNames;
-		} else if (true) {
-			// register as 'classnames', consistent with npm package name
-			!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function () {
-				return classNames;
-			}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-		} else {
-			window.classNames = classNames;
-		}
-	}());
-
-
-/***/ },
-/* 151 */
-/***/ function(module, exports, __webpack_require__) {
-
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
@@ -19257,7 +19199,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 152 */
+/* 151 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -19282,7 +19224,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _Bracket2 = _interopRequireDefault(_Bracket);
 
-	var _winningPathLength = __webpack_require__(151);
+	var _winningPathLength = __webpack_require__(150);
 
 	var _winningPathLength2 = _interopRequireDefault(_winningPathLength);
 
@@ -19350,16 +19292,59 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	/**
+	 * The default title component used for each bracket, receives the game and the height of the bracket
+	 */
+
+	var BracketTitle = function (_PureComponent) {
+	  _inherits(BracketTitle, _PureComponent);
+
+	  function BracketTitle() {
+	    _classCallCheck(this, BracketTitle);
+
+	    return _possibleConstructorReturn(this, (BracketTitle.__proto__ || Object.getPrototypeOf(BracketTitle)).apply(this, arguments));
+	  }
+
+	  _createClass(BracketTitle, [{
+	    key: "render",
+	    value: function render() {
+	      var _props = this.props,
+	          game = _props.game,
+	          height = _props.height;
+
+
+	      return _react2.default.createElement(
+	        "h3",
+	        { style: { textAlign: 'center' } },
+	        game.bracketLabel || game.name,
+	        " (",
+	        height,
+	        " ",
+	        height === 1 ? 'round' : 'rounds',
+	        ")"
+	      );
+	    }
+	  }]);
+
+	  return BracketTitle;
+	}(_react.PureComponent);
+
+	/**
 	 * Displays the brackets for some set of games sorted by bracket height
 	 */
 
-	var BracketGenerator = function (_PureComponent) {
-	  _inherits(BracketGenerator, _PureComponent);
+
+	BracketTitle.propTypes = {
+	  game: _GameShape2.default.isRequired,
+	  height: _react.PropTypes.number.isRequired
+	};
+
+	var BracketGenerator = function (_PureComponent2) {
+	  _inherits(BracketGenerator, _PureComponent2);
 
 	  function BracketGenerator() {
 	    var _ref6;
 
-	    var _temp, _this, _ret;
+	    var _temp, _this2, _ret;
 
 	    _classCallCheck(this, BracketGenerator);
 
@@ -19367,9 +19352,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      args[_key] = arguments[_key];
 	    }
 
-	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref6 = BracketGenerator.__proto__ || Object.getPrototypeOf(BracketGenerator)).call.apply(_ref6, [this].concat(args))), _this), _this.state = {
-	      finals: makeFinals({ games: _this.props.games })
-	    }, _temp), _possibleConstructorReturn(_this, _ret);
+	    return _ret = (_temp = (_this2 = _possibleConstructorReturn(this, (_ref6 = BracketGenerator.__proto__ || Object.getPrototypeOf(BracketGenerator)).call.apply(_ref6, [this].concat(args))), _this2), _this2.state = {
+	      finals: makeFinals({ games: _this2.props.games })
+	    }, _temp), _possibleConstructorReturn(_this2, _ret);
 	  }
 
 	  _createClass(BracketGenerator, [{
@@ -19384,10 +19369,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: "render",
 	    value: function render() {
-	      var _props = this.props,
-	          games = _props.games,
-	          style = _props.style,
-	          rest = _objectWithoutProperties(_props, ["games", "style"]),
+	      var _props2 = this.props,
+	          games = _props2.games,
+	          TitleComponent = _props2.titleComponent,
+	          style = _props2.style,
+	          rest = _objectWithoutProperties(_props2, ["games", "titleComponent", "style"]),
 	          finals = this.state.finals;
 
 	      return _react2.default.createElement(
@@ -19398,21 +19384,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	              height = _ref8.height;
 	          return _react2.default.createElement(
 	            "div",
-	            { key: game.id, className: "text-center", style: { flexGrow: 1, maxWidth: '100%' } },
-	            _react2.default.createElement(
-	              "div",
-	              { className: "max-width" },
-	              _react2.default.createElement(
-	                "h3",
-	                { className: "text-center" },
-	                game.bracketLabel || game.name,
-	                " (",
-	                height,
-	                " ",
-	                height === 1 ? 'round' : 'rounds',
-	                ")"
-	              )
-	            ),
+	            { key: game.id, style: { textAlign: 'center', flexGrow: 1, maxWidth: '100%' } },
+	            _react2.default.createElement(BracketTitle, { game: game, height: height }),
 	            _react2.default.createElement(
 	              "div",
 	              { style: { maxWidth: '100%', overflow: 'auto', WebkitOverflowScrolling: 'touch' } },
@@ -19430,13 +19403,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	BracketGenerator.propTypes = {
 	  games: _react.PropTypes.arrayOf(_GameShape2.default).isRequired,
 
+	  titleComponent: _react.PropTypes.func,
+
 	  hoveredTeamId: _react.PropTypes.string,
 	  onHoveredTeamIdChange: _react.PropTypes.func.isRequired,
 	  onClickGame: _react.PropTypes.func
 	};
 	BracketGenerator.defaultProps = {
 	  hoveredTeamId: null,
-	  onClickGame: null
+	  onClickGame: null,
+	  titleComponent: BracketTitle
 	};
 	exports.default = (0, _reactControllables2.default)(BracketGenerator, ['hoveredTeamId']);
 

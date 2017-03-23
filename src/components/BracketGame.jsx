@@ -14,7 +14,7 @@ class BracketGame extends PureComponent {
     hoveredTeamId: PropTypes.string,
     onHoveredTeamIdChange: PropTypes.func.isRequired,
 
-    style: PropTypes.shape(
+    styles: PropTypes.shape(
       {
         backgroundColor: PropTypes.string.isRequired,
         hoverBackgroundColor: PropTypes.string.isRequired,
@@ -32,7 +32,7 @@ class BracketGame extends PureComponent {
     homeOnTop: true,
     hoveredTeamId: null,
 
-    style: {
+    styles: {
       backgroundColor: '#58595e',
       hoverBackgroundColor: '#222',
 
@@ -53,7 +53,7 @@ class BracketGame extends PureComponent {
       hoveredTeamId,
       onHoveredTeamIdChange,
 
-      style: {
+      styles: {
         backgroundColor,
         hoverBackgroundColor,
         scoreBackground,
