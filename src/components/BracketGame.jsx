@@ -25,7 +25,9 @@ class BracketGame extends PureComponent {
         gameNameStyle: PropTypes.object.isRequired,
         teamSeparatorStyle: PropTypes.object.isRequired
       }
-    )
+    ),
+
+    formatTime: PropTypes.func
   };
 
   static defaultProps = {
@@ -43,7 +45,9 @@ class BracketGame extends PureComponent {
       gameNameStyle: { fill: '#999', fontSize: 10 },
       gameTimeStyle: { fill: '#999', fontSize: 10 },
       teamSeparatorStyle: { stroke: '#444549', strokeWidth: 1 }
-    }
+    },
+
+    formatTime: scheduled => moment(scheduled).format('l LT')
   };
 
   render() {
@@ -66,6 +70,8 @@ class BracketGame extends PureComponent {
       },
 
       homeOnTop,
+
+      formatTime,
 
       ...rest
     } = this.props;
@@ -115,7 +121,7 @@ class BracketGame extends PureComponent {
       <svg width="200" height="82" {...rest} viewBox="0 0 200 82">
         {/* game time */}
         <text x="100" y="8" textAnchor="middle" style={gameTimeStyle}>
-          {moment(scheduled).format('l LT')}
+          {formatTime(scheduled)}
         </text>
 
         {/* backgrounds */}

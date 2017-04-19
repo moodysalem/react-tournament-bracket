@@ -376,7 +376,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	          gameTimeStyle = _props$styles.gameTimeStyle,
 	          teamSeparatorStyle = _props$styles.teamSeparatorStyle,
 	          homeOnTop = _props.homeOnTop,
-	          rest = _objectWithoutProperties(_props, ["game", "hoveredTeamId", "onHoveredTeamIdChange", "styles", "homeOnTop"]);
+	          formatTime = _props.formatTime,
+	          rest = _objectWithoutProperties(_props, ["game", "hoveredTeamId", "onHoveredTeamIdChange", "styles", "homeOnTop", "formatTime"]);
 
 	      var name = game.name,
 	          sides = game.sides,
@@ -441,7 +442,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        _react2.default.createElement(
 	          "text",
 	          { x: "100", y: "8", textAnchor: "middle", style: gameTimeStyle },
-	          (0, _moment2.default)(scheduled).format('l LT')
+	          formatTime(scheduled)
 	        ),
 	        _react2.default.createElement("rect", { x: "0", y: "12", width: "200", height: "45", fill: backgroundColor, rx: "3", ry: "3" }),
 	        _react2.default.createElement("rect", { x: "0", y: "12", width: "200", height: "22.5", fill: topHovered ? hoverBackgroundColor : backgroundColor, rx: "3",
@@ -482,7 +483,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    teamScoreStyle: _react.PropTypes.object.isRequired,
 	    gameNameStyle: _react.PropTypes.object.isRequired,
 	    teamSeparatorStyle: _react.PropTypes.object.isRequired
-	  })
+	  }),
+
+	  formatTime: _react.PropTypes.func
 	};
 	BracketGame.defaultProps = {
 	  homeOnTop: true,
@@ -499,6 +502,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    gameNameStyle: { fill: '#999', fontSize: 10 },
 	    gameTimeStyle: { fill: '#999', fontSize: 10 },
 	    teamSeparatorStyle: { stroke: '#444549', strokeWidth: 1 }
+	  },
+
+	  formatTime: function formatTime(scheduled) {
+	    return (0, _moment2.default)(scheduled).format('l LT');
 	  }
 	};
 	exports.default = (0, _reactControllables2.default)(BracketGame, ['hoveredTeamId']);
