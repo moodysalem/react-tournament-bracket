@@ -1,11 +1,4 @@
-import Bracket from './components/Bracket';
-import BracketGame from './components/BracketGame';
-import BracketGenerator from './components/BracketGenerator';
-import GameShape from './components/GameShape';
-
-export {
-  Bracket,
-  BracketGame,
-  BracketGenerator,
-  GameShape
-};
+export Bracket from './components/Bracket';
+export BracketGame from './components/BracketGame';
+export BracketGenerator from './components/BracketGenerator';
+export GameShape from './components/GameShape';

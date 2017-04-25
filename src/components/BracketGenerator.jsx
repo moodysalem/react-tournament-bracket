@@ -1,9 +1,8 @@
-import React, { PropTypes, PureComponent } from "react";
+import React, { Component, PropTypes, PureComponent } from "react";
 import _ from "underscore";
 import Bracket from "./Bracket";
 import winningPathLength from "../util/winningPathLength";
 import GameShape from "./GameShape";
-import controllable from "react-controllables";
 
 const makeFinals = ({ games }) => {
   const isInGroup = (() => {
@@ -66,20 +65,14 @@ class BracketTitle extends PureComponent {
 /**
  * Displays the brackets for some set of games sorted by bracket height
  */
-class BracketGenerator extends PureComponent {
+export default class BracketGenerator extends Component {
   static propTypes = {
     games: PropTypes.arrayOf(GameShape).isRequired,
 
-    titleComponent: PropTypes.func,
-
-    hoveredTeamId: PropTypes.string,
-    onHoveredTeamIdChange: PropTypes.func.isRequired,
-    onClickGame: PropTypes.func
+    titleComponent: PropTypes.func
   };
 
   static defaultProps = {
-    hoveredTeamId: null,
-    onClickGame: null,
     titleComponent: BracketTitle
   };
 
@@ -94,8 +87,8 @@ class BracketGenerator extends PureComponent {
   }
 
   render() {
-    const { games, titleComponent: TitleComponent, style, ...rest } = this.props,
-      { finals } = this.state;
+    const { games, titleComponent: TitleComponent, style, ...rest } = this.props;
+    const { finals } = this.state;
 
     return (
       <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center', ...style }}>
@@ -116,6 +109,3 @@ class BracketGenerator extends PureComponent {
     );
   }
 }
-
-
-export default controllable(BracketGenerator, [ 'hoveredTeamId' ]);

@@ -27,7 +27,8 @@ class BracketGame extends PureComponent {
       }
     ),
 
-    formatTime: PropTypes.func
+    topText: PropTypes.func,
+    bottomText: PropTypes.func,
   };
 
   static defaultProps = {
@@ -47,7 +48,8 @@ class BracketGame extends PureComponent {
       teamSeparatorStyle: { stroke: '#444549', strokeWidth: 1 }
     },
 
-    formatTime: scheduled => moment(scheduled).format('l LT')
+    topText: ({ scheduled }) => moment(scheduled).format('l LT'),
+    bottomText: ({ name, bracketLabel }) => _.compact([ name, bracketLabel ]).join(' - '),
   };
 
   render() {
@@ -71,12 +73,12 @@ class BracketGame extends PureComponent {
 
       homeOnTop,
 
-      formatTime,
+      topText, bottomText,
 
       ...rest
     } = this.props;
 
-    const { name, sides, scheduled, bracketLabel } = game;
+    const { sides } = game;
 
     const top = sides[ homeOnTop ? HOME : VISITOR ],
       bottom = sides[ homeOnTop ? VISITOR : HOME ];
@@ -118,10 +120,10 @@ class BracketGame extends PureComponent {
       bottomHovered = (bottom && bottom.team && bottom.team.id === hoveredTeamId);
 
     return (
-      <svg width="200" height="82" {...rest} viewBox="0 0 200 82">
+      <svg width="200" height="82" viewBox="0 0 200 82" {...rest}>
         {/* game time */}
         <text x="100" y="8" textAnchor="middle" style={gameTimeStyle}>
-          {formatTime(scheduled)}
+          { topText(game) }
         </text>
 
         {/* backgrounds */}
@@ -140,7 +142,7 @@ class BracketGame extends PureComponent {
         <rect x="170" y="12" width="30" height="45" fill={scoreBackground} rx="3" ry="3"/>
 
         {/* winner background */}
-        {winnerBackground}
+        { winnerBackground }
 
         {/* the players */}
         {
@@ -159,7 +161,7 @@ class BracketGame extends PureComponent {
 
         {/* game name */}
         <text x="100" y="68" textAnchor="middle" style={gameNameStyle}>
-          {_.compact([ name, bracketLabel ]).join(' - ')}
+          { bottomText(game) }
         </text>
       </svg>
     );

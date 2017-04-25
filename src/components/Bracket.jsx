@@ -1,22 +1,19 @@
-import React, { PropTypes, PureComponent } from "react";
+import React, { Component, PropTypes, PureComponent } from "react";
 import _ from "underscore";
-import BracketGame from "./BracketGame";
 import GameShape from "./GameShape";
 import winningPathLength from "../util/winningPathLength";
-import controllable from "react-controllables";
+import BracketGame from "./BracketGame";
 
-const toBracketGames = ({ game, x, y, gameDimensions, roundSeparatorWidth, round, lineInfo, homeOnTop, onClickGame, ...rest }) => {
+const toBracketGames = ({ GameComponent, game, x, y, gameDimensions, roundSeparatorWidth, round, lineInfo, homeOnTop, ...rest }) => {
   const { width: gameWidth, height: gameHeight } = gameDimensions;
 
   const ySep = gameHeight * Math.pow(2, round - 2);
 
   return [
     <g key={`${game.id}-${y}`}>
-      <BracketGame {...gameDimensions} {...rest}
-                   key={game.id} game={game} x={x} y={y}
-                   homeOnTop={homeOnTop}
-                   onClick={onClickGame ? () => onClickGame(game) : null}
-                   style={{ cursor: onClickGame !== null ? 'pointer' : null }}/>
+      <GameComponent
+        {...rest} {...gameDimensions}
+        key={game.id} homeOnTop={homeOnTop} game={game} x={x} y={y}/>
     </g>
   ].concat(
     _.chain(game.sides)
@@ -42,6 +39,7 @@ const toBracketGames = ({ game, x, y, gameDimensions, roundSeparatorWidth, round
             .concat(
               toBracketGames(
                 {
+                  GameComponent,
                   game: sourceGame,
                   homeOnTop,
                   lineInfo,
@@ -50,7 +48,6 @@ const toBracketGames = ({ game, x, y, gameDimensions, roundSeparatorWidth, round
                   x: x - gameWidth - roundSeparatorWidth,
                   y: y + ((ySep / 2) * multiplier),
                   round: round - 1,
-                  onClickGame,
                   ...rest
                 }
               )
@@ -65,16 +62,12 @@ const toBracketGames = ({ game, x, y, gameDimensions, roundSeparatorWidth, round
 /**
  * Displays the bracket that culminates in a particular finals game
  */
-class Bracket extends PureComponent {
+export default class Bracket extends Component {
   static propTypes = {
     game: GameShape.isRequired,
+    GameComponent: PropTypes.func,
 
     homeOnTop: PropTypes.bool,
-
-    hoveredTeamId: PropTypes.string,
-    onHoveredTeamIdChange: PropTypes.func.isRequired,
-
-    onClickGame: PropTypes.func,
 
     gameDimensions: PropTypes.shape(
       {
@@ -95,10 +88,9 @@ class Bracket extends PureComponent {
   };
 
   static defaultProps = {
-    hoveredTeamId: null,
-    homeOnTop: true,
+    GameComponent: BracketGame,
 
-    onClickGame: null,
+    homeOnTop: true,
 
     gameDimensions: {
       height: 80,
@@ -116,7 +108,7 @@ class Bracket extends PureComponent {
   };
 
   render() {
-    const { game, gameDimensions, svgPadding, roundSeparatorWidth, ...rest } = this.props;
+    const { GameComponent, game, gameDimensions, svgPadding, roundSeparatorWidth, ...rest } = this.props;
 
     const numRounds = winningPathLength(game);
 
@@ -131,6 +123,7 @@ class Bracket extends PureComponent {
           {
             toBracketGames(
               {
+                GameComponent,
                 gameDimensions,
                 roundSeparatorWidth,
                 game,
@@ -149,5 +142,3 @@ class Bracket extends PureComponent {
     );
   }
 }
-
-export default controllable(Bracket, [ 'hoveredTeamId' ]);
