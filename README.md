@@ -1,4 +1,4 @@
-# [![npm](https://img.shields.io/npm/v/react-tournament-bracket.svg)](https://www.npmjs.com/package/react-tournament-bracket) [![Build Status](https://travis-ci.org/moodysalem/react-tournament-bracket.svg?branch=master)](https://travis-ci.org/moodysalem/react-tournament-bracket) react-tournament-bracket
+# [![npm](https://img.shields.io/npm/v/react-tournament-bracket.svg)](https://www.npmjs.com/package/react-tournament-bracket) [![Build Status](https://travis-ci.org/moodysalem/react-tournament-bracket.svg?branch=gh-pages)](https://travis-ci.org/moodysalem/react-tournament-bracket) react-tournament-bracket
 ![image](http://i.imgur.com/M3nJsRF.png "Example Bracket")
 
 React components for rendering a tournament bracket
