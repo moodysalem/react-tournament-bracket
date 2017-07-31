@@ -19,6 +19,12 @@ import {render} from 'react-dom';
 render(<Bracket game={game}/>, document.getElementById('app'));
 ```
 
+# Props
+## [GameShape](https://github.com/moodysalem/react-tournament-bracket/blob/gh-pages/src/components/GameShape.jsx#L40)
+## [BracketGame](https://github.com/moodysalem/react-tournament-bracket/blob/gh-pages/src/components/BracketGame.jsx#L9)
+## [Bracket](https://github.com/moodysalem/react-tournament-bracket/blob/gh-pages/src/components/Bracket.jsx#L66)
+## [BracketGenerator](https://github.com/moodysalem/react-tournament-bracket/blob/gh-pages/src/components/BracketGenerator.jsx#L69)
+
 # TODO
 * Component documentation
 * Better handling of mouse team highlighting (currently, when moving between teams in a particular game, the mouse events fire in inconsistent order and can result in the wrong team left highlighted)
