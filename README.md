@@ -4,11 +4,11 @@
 React components for rendering a tournament bracket
 
 # Demo
-Go [here](https://moodysalem.com/react-tournament-bracket/)
+Go [here](https://moodysalem.github.io/react-tournament-bracket/)
 
 # Install
 ```
-yarn add react-tournament-bracket 
+npm i react-tournament-bracket 
 ```
 
 # Usage
