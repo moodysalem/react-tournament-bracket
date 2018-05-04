@@ -1,13 +1,16 @@
-import React, { Component, PropTypes, PureComponent } from "react";
-import _ from "underscore";
-import Bracket from "./Bracket";
-import winningPathLength from "../util/winningPathLength";
-import GameShape from "./GameShape";
+import * as React from 'react';
+import { CSSProperties } from 'react';
+import * as _ from 'underscore';
+import Bracket, { BracketProps } from './Bracket';
+import winningPathLength from '../util/winningPathLength';
+import { Game } from './model';
 
-const makeFinals = ({ games }) => {
+const makeFinals = ({ games }: { games: Game[] }): Array<{ game: Game, height: number }> => {
   const isInGroup = (() => {
-    const gameIdHash = _.chain(games).indexBy('id').mapObject(val => 1).value();
-    return id => Boolean(gameIdHash[ id ]);
+    const gameIdHash: { [ id: string ]: true } =
+      _.reduce(games, ({ id }: Game, memo) => ({ ...memo, [ id ]: true }), {});
+
+    return (id: string) => (gameIdHash[ id ] === true);
   })();
 
   const gamesFeedInto = _.map(
@@ -45,12 +48,7 @@ const makeFinals = ({ games }) => {
 /**
  * The default title component used for each bracket, receives the game and the height of the bracket
  */
-class BracketTitle extends PureComponent {
-  static propTypes = {
-    game: GameShape.isRequired,
-    height: PropTypes.number.isRequired
-  };
-
+export class BracketTitle extends React.PureComponent<{ game: Game; height: number; }> {
   render() {
     const { game, height } = this.props;
 
@@ -62,16 +60,16 @@ class BracketTitle extends PureComponent {
   }
 }
 
+export interface BracketGeneratorProps extends BracketProps {
+  games: Game[];
+  titleComponent?: React.ComponentClass<{ game: Game; height: number; }>;
+  style?: CSSProperties;
+}
+
 /**
  * Displays the brackets for some set of games sorted by bracket height
  */
-export default class BracketGenerator extends Component {
-  static propTypes = {
-    games: PropTypes.arrayOf(GameShape).isRequired,
-
-    titleComponent: PropTypes.func
-  };
-
+export default class BracketGenerator extends React.Component<BracketGeneratorProps, { finals: Array<{ game: Game; height: number; }> }> {
   static defaultProps = {
     titleComponent: BracketTitle
   };
@@ -80,7 +78,7 @@ export default class BracketGenerator extends Component {
     finals: makeFinals({ games: this.props.games })
   };
 
-  componentWillReceiveProps({ games }) {
+  componentWillReceiveProps({ games }: BracketGeneratorProps) {
     if (games !== this.props.games) {
       this.setState({ finals: makeFinals({ games }) });
     }

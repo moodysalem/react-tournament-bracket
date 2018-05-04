@@ -1,9 +1,11 @@
-import _ from 'underscore';
+import * as _ from 'underscore';
+import { Game } from '../components/model';
 
-export default function winningPathLength(game, visited = {}) {
+export default function winningPathLength(game: Game, visited: { [ id: string ]: true } = {}): number {
   if (visited[ game.id ]) {
     return 0;
   }
+
   visited[ game.id ] = true;
 
   return (
@@ -13,7 +15,7 @@ export default function winningPathLength(game, visited = {}) {
           Math,
           _.map(
             game.sides,
-            ({ seed }) => (seed != null && seed.sourceGame != null && seed.rank == 1) ?
+            ({ seed }) => (seed && seed.sourceGame && seed.rank == 1) ?
               winningPathLength(seed.sourceGame, visited) : 0
           )
         ) :

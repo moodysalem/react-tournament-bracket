@@ -1,37 +1,33 @@
-import React, { PropTypes, PureComponent } from "react";
-import { RectClipped } from "./Clipped";
-import GameShape, { HOME, VISITOR } from "./GameShape";
-import controllable from "react-controllables";
-import moment from "moment";
-import _ from "underscore";
+import * as  React from 'react';
+import { RectClipped } from './Clipped';
+import { Game, Side, SideInfo } from './model';
+import controllable from 'react-controllables';
+import * as _ from 'underscore';
 
-class BracketGame extends PureComponent {
-  static propTypes = {
-    game: GameShape.isRequired,
+interface BracketGameProps {
+  game: Game;
 
-    homeOnTop: PropTypes.bool,
+  homeOnTop?: boolean;
+  hoveredTeamId?: string | null;
 
-    hoveredTeamId: PropTypes.string,
-    onHoveredTeamIdChange: PropTypes.func.isRequired,
-
-    styles: PropTypes.shape(
-      {
-        backgroundColor: PropTypes.string.isRequired,
-        hoverBackgroundColor: PropTypes.string.isRequired,
-        scoreBackground: PropTypes.string.isRequired,
-        winningScoreBackground: PropTypes.string.isRequired,
-        teamNameStyle: PropTypes.object.isRequired,
-        teamScoreStyle: PropTypes.object.isRequired,
-        gameNameStyle: PropTypes.object.isRequired,
-        teamSeparatorStyle: PropTypes.object.isRequired
-      }
-    ),
-
-    topText: PropTypes.func,
-    bottomText: PropTypes.func,
+  onHoveredTeamIdChange: (id: string) => void;
+  styles?: {
+    backgroundColor: string;
+    hoverBackgroundColor: string;
+    scoreBackground: string;
+    winningScoreBackground: string;
+    teamNameStyle: React.CSSProperties;
+    teamScoreStyle: React.CSSProperties;
+    gameNameStyle: React.CSSProperties;
+    gameTimeStyle: React.CSSProperties;
+    teamSeparatorStyle: React.CSSProperties;
   };
+  topText: (game: Game) => string;
+  bottomText: (game: Game) => string;
+}
 
-  static defaultProps = {
+class BracketGame extends React.PureComponent<BracketGameProps> {
+  static defaultProps: Partial<BracketGameProps> = {
     homeOnTop: true,
     hoveredTeamId: null,
 
@@ -48,8 +44,8 @@ class BracketGame extends PureComponent {
       teamSeparatorStyle: { stroke: '#444549', strokeWidth: 1 }
     },
 
-    topText: ({ scheduled }) => moment(scheduled).format('l LT'),
-    bottomText: ({ name, bracketLabel }) => _.compact([ name, bracketLabel ]).join(' - '),
+    topText: ({ scheduled }: Game) => new Date(scheduled).toLocaleDateString(),
+    bottomText: ({ name, bracketLabel }: Game) => _.compact([ name, bracketLabel ]).join(' - ')
   };
 
   render() {
@@ -80,8 +76,9 @@ class BracketGame extends PureComponent {
 
     const { sides } = game;
 
-    const top = sides[ homeOnTop ? HOME : VISITOR ],
-      bottom = sides[ homeOnTop ? VISITOR : HOME ];
+
+    const top = sides[ homeOnTop ? Side.HOME : Side.VISITOR ];
+    const bottom = sides[ homeOnTop ? Side.VISITOR : Side.HOME ];
 
     const winnerBackground = (top && bottom && top.score && bottom.score && top.score.score !== bottom.score.score) ?
       (
@@ -91,7 +88,14 @@ class BracketGame extends PureComponent {
       ) :
       null;
 
-    const Side = ({ x, y, side, onHover }) => {
+    interface SideComponentProps {
+      x: number;
+      y: number;
+      side: SideInfo;
+      onHover: (id: string | null) => void
+    }
+
+    const SideComponent = ({ x, y, side, onHover }: SideComponentProps) => {
       const tooltip = side.seed && side.team ? <title>{side.seed.displayName}</title> : null;
 
       return (
@@ -123,7 +127,7 @@ class BracketGame extends PureComponent {
       <svg width="200" height="82" viewBox="0 0 200 82" {...rest}>
         {/* game time */}
         <text x="100" y="8" textAnchor="middle" style={gameTimeStyle}>
-          { topText(game) }
+          {topText(game)}
         </text>
 
         {/* backgrounds */}
@@ -142,18 +146,18 @@ class BracketGame extends PureComponent {
         <rect x="170" y="12" width="30" height="45" fill={scoreBackground} rx="3" ry="3"/>
 
         {/* winner background */}
-        { winnerBackground }
+        {winnerBackground}
 
         {/* the players */}
         {
           top ? (
-            <Side x={0} y={12} side={top} onHover={onHoveredTeamIdChange}/>
+            <SideComponent x={0} y={12} side={top} onHover={onHoveredTeamIdChange}/>
           ) : null
         }
 
         {
           bottom ? (
-            <Side x={0} y={34.5} side={bottom} onHover={onHoveredTeamIdChange}/>
+            <SideComponent x={0} y={34.5} side={bottom} onHover={onHoveredTeamIdChange}/>
           ) : null
         }
 
@@ -161,7 +165,7 @@ class BracketGame extends PureComponent {
 
         {/* game name */}
         <text x="100" y="68" textAnchor="middle" style={gameNameStyle}>
-          { bottomText(game) }
+          {bottomText(game)}
         </text>
       </svg>
     );

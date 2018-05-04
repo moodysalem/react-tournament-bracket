@@ -1,10 +1,35 @@
-import React, { Component, PropTypes, PureComponent } from "react";
-import _ from "underscore";
-import GameShape from "./GameShape";
-import winningPathLength from "../util/winningPathLength";
-import BracketGame from "./BracketGame";
+import * as React from 'react';
+import * as _ from 'underscore';
+import winningPathLength from '../util/winningPathLength';
+import BracketGame from './BracketGame';
+import { Game, Side } from './model';
 
-const toBracketGames = ({ GameComponent, game, x, y, gameDimensions, roundSeparatorWidth, round, lineInfo, homeOnTop, ...rest }) => {
+export interface LineInfo {
+  yOffset: number;
+  separation: number;
+  homeVisitorSpread: number;
+}
+
+export type GameComponent = React.ComponentClass<{
+  game: Game;
+  x: number;
+  y: number;
+  homeOnTop: boolean;
+}>;
+
+interface BracketGamesFunctionProps {
+  game: Game;
+  x: number;
+  y: number;
+  gameDimensions: { width: number; height: number; }
+  roundSeparatorWidth: number;
+  round: number;
+  homeOnTop: boolean;
+  lineInfo: LineInfo;
+  GameComponent: GameComponent;
+}
+
+const toBracketGames = ({ GameComponent, game, x, y, gameDimensions, roundSeparatorWidth, round, lineInfo, homeOnTop, ...rest }: BracketGamesFunctionProps): JSX.Element[] => {
   const { width: gameWidth, height: gameHeight } = gameDimensions;
 
   const ySep = gameHeight * Math.pow(2, round - 2);
@@ -17,14 +42,14 @@ const toBracketGames = ({ GameComponent, game, x, y, gameDimensions, roundSepara
     </g>
   ].concat(
     _.chain(game.sides)
-      .map((obj, side) => ({ ...obj, side }))
+      .map((sideInfo, side: Side) => ({ ...sideInfo, side }))
       // filter to the teams that come from winning other games
       .filter(({ seed }) => seed && seed.sourceGame !== null && seed.rank === 1)
       .map(
         ({ seed: { sourceGame }, side }) => {
           // we put visitor teams on the bottom
-          const isTop = side === 'home' ? homeOnTop : !homeOnTop,
-            multiplier = isTop ? -1 : 1;
+          const isTop = side === Side.HOME ? homeOnTop : !homeOnTop;
+          const multiplier = isTop ? -1 : 1;
 
           const pathInfo = [
             `M${x - lineInfo.separation} ${y + gameHeight / 2 + lineInfo.yOffset + multiplier * lineInfo.homeVisitorSpread}`,
@@ -59,35 +84,24 @@ const toBracketGames = ({ GameComponent, game, x, y, gameDimensions, roundSepara
   );
 };
 
+export interface BracketProps {
+  game: Game;
+  GameComponent?: GameComponent;
+  homeOnTop: boolean;
+  gameDimensions: {
+    height: number;
+    width: number;
+  };
+  svgPadding: number;
+  roundSeparatorWidth: number;
+  lineInfo: LineInfo;
+}
+
 /**
  * Displays the bracket that culminates in a particular finals game
  */
-export default class Bracket extends Component {
-  static propTypes = {
-    game: GameShape.isRequired,
-    GameComponent: PropTypes.func,
-
-    homeOnTop: PropTypes.bool,
-
-    gameDimensions: PropTypes.shape(
-      {
-        height: PropTypes.number.isRequired,
-        width: PropTypes.number.isRequired
-      }
-    ).isRequired,
-
-    svgPadding: PropTypes.number.isRequired,
-
-    lineInfo: PropTypes.shape(
-      {
-        yOffset: PropTypes.number.isRequired,
-        separation: PropTypes.number.isRequired,
-        homeVisitorSpread: PropTypes.number.isRequired
-      }
-    ).isRequired
-  };
-
-  static defaultProps = {
+export default class Bracket extends React.Component<BracketProps> {
+  static defaultProps: Partial<BracketProps> = {
     GameComponent: BracketGame,
 
     homeOnTop: true,
@@ -108,7 +122,7 @@ export default class Bracket extends Component {
   };
 
   render() {
-    const { GameComponent, game, gameDimensions, svgPadding, roundSeparatorWidth, ...rest } = this.props;
+    const { GameComponent, game, gameDimensions, svgPadding, roundSeparatorWidth, children, ...rest } = this.props;
 
     const numRounds = winningPathLength(game);
 
