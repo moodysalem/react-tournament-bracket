@@ -12,18 +12,19 @@ npm i react-tournament-bracket
 ```
 
 # Usage
+These bracket components rely on a graph data structure. 
+Thus, to render a bracket, you pass in the final game.
+If you have a set of games matching the model, you can pass them all in
+to render all the brackets. The Bracket Generator will discover which games
+are considered 'finals' and order the rendered brackets by the height of the
+winning path.
+
 ```jsx
-import {Bracket} from 'react-tournament-bracket';
-import {render} from 'react-dom';
+import { Bracket } from 'react-tournament-bracket';
+import { render } from 'react-dom';
 
 render(<Bracket game={game}/>, document.getElementById('app'));
 ```
-
-# Props
-## [GameShape](https://github.com/moodysalem/react-tournament-bracket/blob/gh-pages/src/components/GameShape.jsx#L40)
-## [BracketGame](https://github.com/moodysalem/react-tournament-bracket/blob/gh-pages/src/components/BracketGame.jsx#L9)
-## [Bracket](https://github.com/moodysalem/react-tournament-bracket/blob/gh-pages/src/components/Bracket.jsx#L66)
-## [BracketGenerator](https://github.com/moodysalem/react-tournament-bracket/blob/gh-pages/src/components/BracketGenerator.jsx#L69)
 
 # TODO
 * Component documentation
