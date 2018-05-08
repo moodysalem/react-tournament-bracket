@@ -10,12 +10,14 @@ export interface LineInfo {
   homeVisitorSpread: number;
 }
 
-export type GameComponent = React.ComponentClass<{
+export interface GameComponentProps {
   game: Game;
   x: number;
   y: number;
   homeOnTop: boolean;
-}>;
+}
+
+export type GameComponent = React.ComponentType<GameComponentProps>;
 
 interface BracketGamesFunctionProps {
   game: Game;
@@ -87,14 +89,14 @@ const toBracketGames = ({ GameComponent, game, x, y, gameDimensions, roundSepara
 export interface BracketProps {
   game: Game;
   GameComponent?: GameComponent;
-  homeOnTop: boolean;
-  gameDimensions: {
+  homeOnTop?: boolean;
+  gameDimensions?: {
     height: number;
     width: number;
   };
-  svgPadding: number;
-  roundSeparatorWidth: number;
-  lineInfo: LineInfo;
+  svgPadding?: number;
+  roundSeparatorWidth?: number;
+  lineInfo?: LineInfo;
 }
 
 /**
@@ -122,7 +124,7 @@ export default class Bracket extends React.Component<BracketProps> {
   };
 
   render() {
-    const { GameComponent, game, gameDimensions, svgPadding, roundSeparatorWidth, children, ...rest } = this.props;
+    const { GameComponent, game, gameDimensions, svgPadding, roundSeparatorWidth, homeOnTop, lineInfo, children, ...rest } = this.props;
 
     const numRounds = winningPathLength(game);
 
@@ -135,21 +137,21 @@ export default class Bracket extends React.Component<BracketProps> {
       <svg {...svgDimensions}>
         <g>
           {
-            toBracketGames(
-              {
-                GameComponent,
-                gameDimensions,
-                roundSeparatorWidth,
-                game,
-                round: numRounds,
-                // svgPadding away from the right
-                x: svgDimensions.width - svgPadding - gameDimensions.width,
-                // vertically centered first game
-                y: (svgDimensions.height / 2) - gameDimensions.height / 2,
+            toBracketGames({
+              GameComponent,
+              gameDimensions,
+              roundSeparatorWidth,
+              game,
+              round: numRounds,
+              homeOnTop,
+              lineInfo,
+              // svgPadding away from the right
+              x: svgDimensions.width - svgPadding - gameDimensions.width,
+              // vertically centered first game
+              y: (svgDimensions.height / 2) - gameDimensions.height / 2,
 
-                ...rest
-              }
-            )
+              ...rest
+            })
           }
         </g>
       </svg>

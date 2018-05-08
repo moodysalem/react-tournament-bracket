@@ -22,8 +22,8 @@ interface BracketGameProps {
     gameTimeStyle: React.CSSProperties;
     teamSeparatorStyle: React.CSSProperties;
   };
-  topText: (game: Game) => string;
-  bottomText: (game: Game) => string;
+  topText?: (game: Game) => string;
+  bottomText?: (game: Game) => string;
 }
 
 class BracketGame extends React.PureComponent<BracketGameProps> {
