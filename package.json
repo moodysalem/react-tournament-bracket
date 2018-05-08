@@ -34,7 +34,6 @@
   },
   "homepage": "https://github.com/moodysalem/react-tournament-bracket#readme",
   "dependencies": {
-    "react": "^16.3.2",
     "react-controllables": "^0.6.0",
     "rimraf": "^2.6.2",
     "underscore": "^1.9.0",
@@ -51,6 +50,7 @@
     "@types/rimraf": "^2.0.2",
     "@types/underscore": "^1.8.8",
     "@types/uuid": "^3.4.3",
+    "react": "^16.3.2",
     "ts-node": "^6.0.2",
     "typescript": "^2.8.3"
   }
