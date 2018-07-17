@@ -1,31 +1,31 @@
 import * as React from 'react';
 import { CSSProperties } from 'react';
 import * as _ from 'underscore';
-import Bracket, { BracketProps } from './Bracket';
+import Game from '../models/Game';
 import winningPathLength from '../util/winningPathLength';
-import { Game } from './model';
+import Bracket, { BracketProps } from './Bracket';
+import {BracketTitle} from './BracketTitle';
 
 const makeFinals = ({ games }: { games: Game[] }): Array<{ game: Game, height: number }> => {
   const isInGroup = (() => {
     const gameIdHash: { [ id: string ]: true } =
-      _.reduce(games, ({ id }: Game, memo) => ({ ...memo, [ id ]: true }), {});
-
+    games.reduce(({ id }: Game, memo) => ({ ...memo, [ id ]: true }), {});
     return (id: string) => (gameIdHash[ id ] === true);
   })();
 
-  const gamesFeedInto = _.map(
-    games,
-    game => ({
+  const gamesFeedInto = games.map(
+      (game) => ({
       ...game,
-      feedsInto: _.filter(
-        games,
-        ({ id, sides }) => (
-          isInGroup(id) &&
-          _.any(
-            sides,
-            ({ seed }) => seed !== null && seed.sourceGame !== null && seed.rank === 1 && seed.sourceGame.id === game.id
-          )
-        )
+      feedsInto: games.filter(
+        ({ id, sides}) => {
+          return isInGroup(id);
+
+          // TODO: resolve this (used to be included on the filter)
+          // && _.any(
+          //   sides,
+          //   ({ seed }) => seed !== null && seed.sourceGame !== null && seed.rank === 1 && seed.sourceGame.id === game.id
+          // )
+        }
       )
     })
   );
@@ -45,20 +45,7 @@ const makeFinals = ({ games }: { games: Game[] }): Array<{ game: Game, height: n
     .value();
 };
 
-/**
- * The default title component used for each bracket, receives the game and the height of the bracket
- */
-export class BracketTitle extends React.PureComponent<{ game: Game; height: number; }> {
-  render() {
-    const { game, height } = this.props;
 
-    return (
-      <h3 style={{ textAlign: 'center' }}>
-        {game.bracketLabel || game.name} ({height} {height === 1 ? 'round' : 'rounds'})
-      </h3>
-    );
-  }
-}
 
 export interface BracketGeneratorProps extends BracketProps {
   games: Game[];
@@ -66,17 +53,25 @@ export interface BracketGeneratorProps extends BracketProps {
   style?: CSSProperties;
 }
 
+interface BracketGeneratorState {
+  finals: Array<{ game: Game, height: number }>
+}
+
 /**
  * Displays the brackets for some set of games sorted by bracket height
  */
-export default class BracketGenerator extends React.Component<BracketGeneratorProps, { finals: Array<{ game: Game; height: number; }> }> {
+export default class BracketGenerator extends React.Component<BracketGeneratorProps, BracketGeneratorState> {
+
   static defaultProps = {
     titleComponent: BracketTitle
   };
 
-  state = {
-    finals: makeFinals({ games: this.props.games })
-  };
+  constructor(props: BracketGeneratorProps) {
+    super(props);
+    this.state = {
+        finals: makeFinals({ games: this.props.games })
+    };
+  }
 
   componentWillReceiveProps({ games }: BracketGeneratorProps) {
     if (games !== this.props.games) {
@@ -95,7 +90,7 @@ export default class BracketGenerator extends React.Component<BracketGeneratorPr
             finals,
             ({ game, height }) => (
               <div key={game.id} style={{ textAlign: 'center', flexGrow: 1, maxWidth: '100%' }}>
-                <TitleComponent game={game} height={height}/>
+                <BracketTitle game={game} height={height}/>
                 <div style={{ maxWidth: '100%', overflow: 'auto', WebkitOverflowScrolling: 'touch' }}>
                   <Bracket game={game} {...rest}/>
                 </div>

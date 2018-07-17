@@ -1,8 +1,8 @@
 import * as React from 'react';
 import * as _ from 'underscore';
+import {Game, Side} from '../models/models';
 import winningPathLength from '../util/winningPathLength';
 import BracketGame from './BracketGame';
-import { Game, Side } from './model';
 
 export interface LineInfo {
   yOffset: number;
@@ -31,7 +31,17 @@ interface BracketGamesFunctionProps {
   GameComponent: GameComponent;
 }
 
-const toBracketGames = ({ GameComponent, game, x, y, gameDimensions, roundSeparatorWidth, round, lineInfo, homeOnTop, ...rest }: BracketGamesFunctionProps): JSX.Element[] => {
+const toBracketGames = ({
+    GameComponent,
+    game,
+    x,
+    y,
+    gameDimensions,
+    roundSeparatorWidth,
+    round,
+    lineInfo,
+    homeOnTop,
+    ...rest }: BracketGamesFunctionProps): JSX.Element[] => {
   const { width: gameWidth, height: gameHeight } = gameDimensions;
 
   const ySep = gameHeight * Math.pow(2, round - 2);
@@ -46,13 +56,14 @@ const toBracketGames = ({ GameComponent, game, x, y, gameDimensions, roundSepara
     _.chain(game.sides)
       .map((sideInfo, side: Side) => ({ ...sideInfo, side }))
       // filter to the teams that come from winning other games
-      .filter(({ seed }) => seed && seed.sourceGame !== null && seed.rank === 1)
+      .filter((seed: any) => {
+        return seed && seed.sourceGame !== null && seed.rank === 1
+      })
       .map(
-        ({ seed: { sourceGame }, side }) => {
+        (tuple: any) => {
           // we put visitor teams on the bottom
-          const isTop = side === Side.HOME ? homeOnTop : !homeOnTop;
+          const isTop = tuple.side === Side.HOME ? homeOnTop : !homeOnTop;
           const multiplier = isTop ? -1 : 1;
-
           const pathInfo = [
             `M${x - lineInfo.separation} ${y + gameHeight / 2 + lineInfo.yOffset + multiplier * lineInfo.homeVisitorSpread}`,
             `H${x - (roundSeparatorWidth / 2)}`,
@@ -61,21 +72,21 @@ const toBracketGames = ({ GameComponent, game, x, y, gameDimensions, roundSepara
           ];
 
           return [
-            <path key={`${game.id}-${side}-${y}-path`} d={pathInfo.join(' ')} fill="transparent" stroke="black"/>
+            <path key={`${game.id}-${tuple.side}-${y}-path`} d={pathInfo.join(' ')} fill="transparent" stroke="black"/>
           ]
             .concat(
               toBracketGames(
                 {
-                  GameComponent,
-                  game: sourceGame,
-                  homeOnTop,
-                  lineInfo,
-                  gameDimensions,
-                  roundSeparatorWidth,
-                  x: x - gameWidth - roundSeparatorWidth,
-                  y: y + ((ySep / 2) * multiplier),
-                  round: round - 1,
-                  ...rest
+                    GameComponent,
+                    game: tuple.seed.sourceGame,
+                    gameDimensions,
+                    homeOnTop,
+                    lineInfo,
+                    round: round - 1,
+                    roundSeparatorWidth,
+                    x: x - gameWidth - roundSeparatorWidth,
+                    y: y + ((ySep / 2) * multiplier),
+                    ...rest
                 }
               )
             );
@@ -87,45 +98,36 @@ const toBracketGames = ({ GameComponent, game, x, y, gameDimensions, roundSepara
 };
 
 export interface BracketProps {
-  game: Game;
   GameComponent?: GameComponent;
-  homeOnTop?: boolean;
   gameDimensions?: {
     height: number;
     width: number;
   };
-  svgPadding?: number;
   roundSeparatorWidth?: number;
+  game: Game;
+  homeOnTop?: boolean;
   lineInfo?: LineInfo;
+  svgPadding?: number;
 }
 
 /**
  * Displays the bracket that culminates in a particular finals game
  */
-export default class Bracket extends React.Component<BracketProps> {
-  static defaultProps: Partial<BracketProps> = {
-    GameComponent: BracketGame,
-
-    homeOnTop: true,
-
-    gameDimensions: {
-      height: 80,
-      width: 200
-    },
-
-    svgPadding: 20,
-    roundSeparatorWidth: 24,
-
-    lineInfo: {
-      yOffset: -6,
-      separation: 6,
-      homeVisitorSpread: 11
-    }
-  };
+export default class Bracket extends React.Component<BracketProps, {}> {
+  constructor(props: BracketProps) {
+      super(props);
+  }
 
   render() {
-    const { GameComponent, game, gameDimensions, svgPadding, roundSeparatorWidth, homeOnTop, lineInfo, children, ...rest } = this.props;
-
+    // Setup property assignments with defaults:
+    const gameDimensions = this.props.gameDimensions || {height: 80, width: 200};
+    const GameComponent = this.props.GameComponent || BracketGame;
+    const game = this.props.game;
+    const svgPadding = this.props.svgPadding || 20;
+    const roundSeparatorWidth = this.props.roundSeparatorWidth || 24;
+    const homeOnTop = this.props.homeOnTop || true;
+    const lineInfo = this.props.lineInfo || {yOffset: -6, separation: 6, homeVisitorSpread: 11};
+    const {...rest} = this.props;
     const numRounds = winningPathLength(game);
 
     const svgDimensions = {
@@ -133,25 +135,26 @@ export default class Bracket extends React.Component<BracketProps> {
       width: (numRounds * (gameDimensions.width + roundSeparatorWidth)) + svgPadding * 2
     };
 
+    const properties: any = {
+        GameComponent,
+        game,
+        gameDimensions,
+        homeOnTop,
+        lineInfo,
+        round: numRounds,
+        roundSeparatorWidth,
+        // svgPadding away from the right
+        x: svgDimensions.width - svgPadding - gameDimensions.width,
+        // vertically centered first game
+        y: (svgDimensions.height / 2) - gameDimensions.height / 2,
+        ...rest
+    };
+
     return (
       <svg {...svgDimensions}>
         <g>
           {
-            toBracketGames({
-              GameComponent,
-              gameDimensions,
-              roundSeparatorWidth,
-              game,
-              round: numRounds,
-              homeOnTop,
-              lineInfo,
-              // svgPadding away from the right
-              x: svgDimensions.width - svgPadding - gameDimensions.width,
-              // vertically centered first game
-              y: (svgDimensions.height / 2) - gameDimensions.height / 2,
-
-              ...rest
-            })
+            toBracketGames(properties)
           }
         </g>
       </svg>

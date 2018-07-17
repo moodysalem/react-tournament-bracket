@@ -1,0 +1,34 @@
+{
+  "extends": ["tslint:recommended", "tslint-react", "tslint-config-prettier"],
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
+  },
+  "linterOptions": {
+    "exclude": [
+      "config/**/*.js",
+      "node_modules/**/*.ts"
+    ],
+    "ordered-imports": [
+      true,
+      {
+        "import-sources-order": "any",
+        "named-imports-order": "any"
+      }
+    ]
+  },
+  "rules": {
+    "no-console": [false, "error", "log"],
+    "no-shadowed-variable": false,
+    "strictNullChecks": false,
+    "interface-name": false,
+    "member-access": [true, "no-public"],
+    "variable-name": [
+      true,
+      "allow-pascal-case",
+      "ban-keywords",
+      "check-format",
+      "allow-leading-underscore"
+    ]
+  }
+}
