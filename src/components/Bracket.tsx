@@ -32,16 +32,16 @@ interface BracketGamesFunctionProps {
 }
 
 const toBracketGames = ({
-                            GameComponent,
-                            game,
-                            x,
-                            y,
-                            gameDimensions,
-                            roundSeparatorWidth,
-                            round,
-                            lineInfo,
-                            homeOnTop,
-                            ...rest }: BracketGamesFunctionProps): JSX.Element[] => {
+    GameComponent,
+    game,
+    x,
+    y,
+    gameDimensions,
+    roundSeparatorWidth,
+    round,
+    lineInfo,
+    homeOnTop,
+    ...rest }: BracketGamesFunctionProps): JSX.Element[] => {
   const { width: gameWidth, height: gameHeight } = gameDimensions;
 
   const ySep = gameHeight * Math.pow(2, round - 2);

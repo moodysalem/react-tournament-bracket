@@ -2,6 +2,7 @@ import * as  React from 'react';
 import * as _ from 'underscore';
 import {Game, Side, SideInfo} from '../models/models';
 import ReactClipped from './ReactClipped';
+
 interface BracketGameProps {
   game: Game;
 
@@ -60,6 +61,7 @@ const defaultStyles = {
     winningScoreBackground: '#ff7324'
 };
 
+// TODO: make these const function references all private functions in the BracketGame component class
 const defaultOnHoveredTeamIdChange = (id: string) => {
     return;
 };

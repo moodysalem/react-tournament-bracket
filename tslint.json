@@ -1,5 +1,9 @@
 {
   "extends": ["tslint:recommended", "tslint-react", "tslint-config-prettier"],
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
+  },
   "linterOptions": {
     "exclude": [
       "config/**/*.js",
