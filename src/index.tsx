@@ -1,11 +1,11 @@
-import Bracket from './components/Bracket';
-import BracketGame from './components/BracketGame';
-import BracketGenerator from './components/BracketGenerator';
-import * as Model from './components/model';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+import App from './components/App';
+import registerServiceWorker from './registerServiceWorker';
+import './stylesheets/index.css';
 
-export {
-  Bracket,
-  BracketGame,
-  BracketGenerator,
-  Model
-};
+ReactDOM.render(
+  <App />,
+  document.getElementById('root') as HTMLElement
+);
+registerServiceWorker();

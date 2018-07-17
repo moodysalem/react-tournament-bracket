@@ -1,9 +1,7 @@
 import * as  React from 'react';
-import { RectClipped } from './Clipped';
-import { Game, Side, SideInfo } from './model';
-import * as controllable from 'react-controllables';
 import * as _ from 'underscore';
-
+import {Game, Side, SideInfo} from '../models/models';
+import ReactClipped from './ReactClipped';
 interface BracketGameProps {
   game: Game;
 
@@ -26,56 +24,89 @@ interface BracketGameProps {
   bottomText?: (game: Game) => string;
 }
 
-class BracketGame extends React.PureComponent<BracketGameProps> {
-  static defaultProps: Partial<BracketGameProps> = {
-    homeOnTop: true,
-    hoveredTeamId: null,
+/**
+ * Properties are immutable so assign state variables for optional property fields here. Notice how state is required
+ * so that doesn't need to go into the state as it's a one-time ingested object at construction time.
+ */
+interface BracketGameState {
+    homeOnTop?: boolean;
+    hoveredTeamId?: string | null;
 
-    styles: {
-      backgroundColor: '#58595e',
-      hoverBackgroundColor: '#222',
+    onHoveredTeamIdChange: (id: string) => void;
+    styles?: {
+        backgroundColor: string;
+        hoverBackgroundColor: string;
+        scoreBackground: string;
+        winningScoreBackground: string;
+        teamNameStyle: React.CSSProperties;
+        teamScoreStyle: React.CSSProperties;
+        gameNameStyle: React.CSSProperties;
+        gameTimeStyle: React.CSSProperties;
+        teamSeparatorStyle: React.CSSProperties;
+    };
+    topText?: (game: Game) => string;
+    bottomText?: (game: Game) => string;
+}
 
-      scoreBackground: '#787a80',
-      winningScoreBackground: '#ff7324',
-      teamNameStyle: { fill: '#fff', fontSize: 12, textShadow: '1px 1px 1px #222' },
-      teamScoreStyle: { fill: '#23252d', fontSize: 12 },
-      gameNameStyle: { fill: '#999', fontSize: 10 },
-      gameTimeStyle: { fill: '#999', fontSize: 10 },
-      teamSeparatorStyle: { stroke: '#444549', strokeWidth: 1 }
-    },
+const defaultStyles = {
+    backgroundColor: '#58595e',
+    gameNameStyle: {fill: '#999', fontSize: 10},
+    gameTimeStyle: {fill: '#999', fontSize: 10},
+    hoverBackgroundColor: '#222',
+    scoreBackground: '#787a80',
+    teamNameStyle: {fill: '#fff', fontSize: 12, textShadow: '1px 1px 1px #222'},
+    teamScoreStyle: {fill: '#23252d', fontSize: 12},
+    teamSeparatorStyle: {stroke: '#444549', strokeWidth: 1},
+    winningScoreBackground: '#ff7324'
+};
 
-    topText: ({ scheduled }: Game) => new Date(scheduled).toLocaleDateString(),
-    bottomText: ({ name, bracketLabel }: Game) => _.compact([ name, bracketLabel ]).join(' - ')
+const defaultOnHoveredTeamIdChange = (id: string) => {
+    return;
+};
+const defaultTopText = ({ scheduled }: Game) => new Date(scheduled).toLocaleDateString();
+const defaultBottomText = ({ name, bracketLabel }: Game) => _.compact([ name, bracketLabel ]).join(' - ');
+
+class BracketGame extends React.Component<BracketGameProps, BracketGameState> {
+
+  constructor(props: BracketGameProps) {
+    super(props);
+    this.state = {
+        bottomText: props.bottomText || defaultBottomText,
+        homeOnTop: props.homeOnTop || true,
+        hoveredTeamId: props.hoveredTeamId || null,
+        onHoveredTeamIdChange: props.onHoveredTeamIdChange || defaultOnHoveredTeamIdChange,
+        styles: props.styles || defaultStyles,
+        topText: props.topText || defaultTopText
+    }
   };
 
   render() {
     const {
-      game,
-
-      hoveredTeamId,
-      onHoveredTeamIdChange,
-
-      styles: {
-        backgroundColor,
-        hoverBackgroundColor,
-        scoreBackground,
-        winningScoreBackground,
-        teamNameStyle,
-        teamScoreStyle,
-        gameNameStyle,
-        gameTimeStyle,
-        teamSeparatorStyle
-      },
-
-      homeOnTop,
-
-      topText, bottomText,
-
-      ...rest
+      game
     } = this.props;
 
-    const { sides } = game;
+    const {
+        homeOnTop,
+        hoveredTeamId,
+        onHoveredTeamIdChange,
+        topText,
+        bottomText,
+        ...rest
+    } = this.state;
 
+    const {
+      backgroundColor,
+      hoverBackgroundColor,
+      scoreBackground,
+      winningScoreBackground,
+      // teamNameStyle,
+      teamScoreStyle,
+      gameNameStyle,
+      gameTimeStyle,
+      teamSeparatorStyle,
+    } = this.state.styles || defaultStyles;
+
+    const { sides } = game;
 
     const top = sides[ homeOnTop ? Side.HOME : Side.VISITOR ];
     const bottom = sides[ homeOnTop ? Side.VISITOR : Side.HOME ];
@@ -98,20 +129,24 @@ class BracketGame extends React.PureComponent<BracketGameProps> {
     const SideComponent = ({ x, y, side, onHover }: SideComponentProps) => {
       const tooltip = side.seed && side.team ? <title>{side.seed.displayName}</title> : null;
 
+      const onMouseEnter = () => onHover(side && side.team ? side.team.id : null);
+      const onMouseLeave = () => onHover(null);
+
       return (
-        <g onMouseEnter={() => onHover(side && side.team ? side.team.id : null)} onMouseLeave={() => onHover(null)}>
+        <g onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
           {/* trigger mouse events on the entire block */}
           <rect x={x} y={y} height={22.5} width={200} fillOpacity={0}>
             {tooltip}
           </rect>
 
-          <RectClipped x={x} y={y} height={22.5} width={165}>
-            <text x={x + 5} y={y + 16}
-                  style={{ ...teamNameStyle, fontStyle: side.seed && side.seed.sourcePool ? 'italic' : null }}>
-              {tooltip}
-              {side.team ? side.team.name : (side.seed ? side.seed.displayName : null)}
-            </text>
-          </RectClipped>
+          <ReactClipped x={x} y={y} height={22.5} width={165}>
+              {/* TODO: fix the following */}
+            {/*<text x={x + 5} y={y + 16}*/}
+                  {/*style={{ ...teamNameStyle, fontStyle: side.seed && side.seed.sourcePool ? 'italic' : null }}>*/}
+              {/*{tooltip}*/}
+              {/*{side.team ? side.team.name : (side.seed ? side.seed.displayName : null)}*/}
+            {/*</text>*/}
+          </ReactClipped>
 
           <text x={x + 185} y={y + 16} style={teamScoreStyle} textAnchor="middle">
             {side.score ? side.score.score : null}
@@ -120,14 +155,14 @@ class BracketGame extends React.PureComponent<BracketGameProps> {
       );
     };
 
-    const topHovered = (top && top.team && top.team.id === hoveredTeamId),
-      bottomHovered = (bottom && bottom.team && bottom.team.id === hoveredTeamId);
+    const topHovered = (top && top.team && top.team.id === hoveredTeamId);
+    const bottomHovered = (bottom && bottom.team && bottom.team.id === hoveredTeamId);
 
     return (
       <svg width="200" height="82" viewBox="0 0 200 82" {...rest}>
         {/* game time */}
         <text x="100" y="8" textAnchor="middle" style={gameTimeStyle}>
-          {topText(game)}
+          {(topText) ? topText(game) : defaultTopText(game)}
         </text>
 
         {/* backgrounds */}
@@ -165,11 +200,11 @@ class BracketGame extends React.PureComponent<BracketGameProps> {
 
         {/* game name */}
         <text x="100" y="68" textAnchor="middle" style={gameNameStyle}>
-          {bottomText(game)}
+          {(bottomText) ? bottomText(game) : defaultBottomText(game)}
         </text>
       </svg>
     );
   }
 }
 
-export default controllable(BracketGame, [ 'hoveredTeamId' ]);
+export default BracketGame;
