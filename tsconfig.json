@@ -7,11 +7,14 @@
     ],
     "jsx": "react",
     "noImplicitAny": true,
-    "outDir": "dist",
+    "outDir": "lib",
     "moduleResolution": "node",
     "declaration": true
   },
   "include": [
     "src"
+  ],
+  "exclude": [
+    "src/**/*.test.tsx"
   ]
 }
