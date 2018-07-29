@@ -68,7 +68,7 @@ const toBracketGames = ({ GameComponent, game, x, y, gameDimensions, roundSepara
                 {
                   GameComponent,
                   game: sourceGame,
-                  homeOnTop: homeOnTopState,
+                  homeOnTop,
                   lineInfo,
                   gameDimensions,
                   roundSeparatorWidth,
@@ -106,7 +106,7 @@ export default class Bracket extends React.Component<BracketProps> {
   static defaultProps: Partial<BracketProps> = {
     GameComponent: BracketGame,
 
-    homeOnTopState: true,
+    homeOnTop: true,
 
     gameDimensions: {
       height: 80,
@@ -143,7 +143,7 @@ export default class Bracket extends React.Component<BracketProps> {
               roundSeparatorWidth,
               game,
               round: numRounds,
-              homeOnTop: homeOnTopState,
+              homeOnTop,
               lineInfo,
               // svgPadding away from the right
               x: svgDimensions.width - svgPadding - gameDimensions.width,

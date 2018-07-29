@@ -28,7 +28,7 @@ interface BracketGameProps {
 
 class BracketGame extends React.PureComponent<BracketGameProps> {
   static defaultProps: Partial<BracketGameProps> = {
-    homeOnTopState: true,
+    homeOnTop: true,
     hoveredTeamId: null,
 
     styles: {
