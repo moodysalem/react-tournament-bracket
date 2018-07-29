@@ -3,17 +3,17 @@
 
 React components for rendering a tournament bracket
 
-# Demo
+## Demo
 Go [here](https://moodysalem.github.io/react-tournament-bracket/)
 
-# Install
+## Install
 ```
 npm i react-tournament-bracket 
 ```
 
-# Usage
-These bracket components rely on a graph data structure. 
-Thus, to render a bracket, you pass in the final game.
+## Usage
+These bracket components rely on a cyclical graph data structure.   
+Thus, to render a bracket, you pass in only the final game.
 If you have a set of games matching the model, you can pass them all in
 to render all the brackets. The Bracket Generator will discover which games
 are considered 'finals' and order the rendered brackets by the height of the
@@ -25,6 +25,8 @@ import { render } from 'react-dom';
 
 render(<Bracket game={game}/>, document.getElementById('app'));
 ```
+
+# Development
 
 # TODO
 * Component documentation

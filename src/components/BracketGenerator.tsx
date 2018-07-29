@@ -60,7 +60,12 @@ export class BracketTitle extends React.PureComponent<{ game: Game; height: numb
   }
 }
 
-export interface BracketGeneratorProps extends BracketProps {
+// We need this to remove game from the bracket props - unfortunately it's copy pasted from here:
+// http://ideasintosoftware.com/typescript-advanced-tricks/
+export type Diff<T extends string, U extends string> = ({[P in T]: P } & {[P in U]: never } & { [ x: string ]: never })[T];
+export type Omit<T, K extends keyof T> = Pick<T, Diff<keyof T, K>>;
+
+export interface BracketGeneratorProps extends Omit<BracketProps, 'game'> {
   games: Game[];
   titleComponent?: React.ComponentClass<{ game: Game; height: number; }>;
   style?: CSSProperties;

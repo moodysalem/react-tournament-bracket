@@ -50,7 +50,7 @@ export default class App extends React.PureComponent {
           It also places each <code>Bracket</code> in mobile friendly parent <code>div</code>s and
           synchronizes the highlighted teams across brackets.
         </p>
-        <BracketGenerator GameComponent={GameComponent} games={GAMES} homeOnTop={homeOnTopState} game={ROOT}/>
+        <BracketGenerator GameComponent={GameComponent} games={GAMES} homeOnTop={homeOnTopState}/>
       </div>
     );
   }
