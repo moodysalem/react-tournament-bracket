@@ -22,7 +22,8 @@
     "noUnusedLocals": true,
     "typeRoots": [
       "node_modules/@types"
-    ]
+    ],
+    "keyofStringsOnly": true
   },
   "exclude": [
     "node_modules",

@@ -9,7 +9,8 @@
     "noImplicitAny": true,
     "outDir": "lib",
     "moduleResolution": "node",
-    "declaration": true
+    "declaration": true,
+    "keyofStringsOnly": true
   },
   "include": [
     "src"
