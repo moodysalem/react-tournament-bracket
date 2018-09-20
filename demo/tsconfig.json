@@ -20,6 +20,7 @@
     "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,
     "noUnusedLocals": true,
+    "keyofStringsOnly": true,
     "typeRoots": [
       "node_modules/@types"
     ]
