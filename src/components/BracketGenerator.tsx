@@ -23,7 +23,7 @@ const makeFinals = ({ games }: { games: Game[] }): Array<{ game: Game, height: n
           isInGroup(id) &&
           _.any(
             sides,
-            ({ seed }) => seed !== null && seed.sourceGame !== null && seed.rank === 1 && seed.sourceGame.id === game.id
+            ({ seed }) => seed && seed.sourceGame !== null && seed.rank === 1 && seed.sourceGame.id === game.id
           )
         )
       )
